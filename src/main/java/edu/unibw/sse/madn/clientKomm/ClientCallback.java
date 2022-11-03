@@ -34,8 +34,9 @@ public interface ClientCallback extends Remote {
     /**
      * Spielfeld aktualisieren
      * @param feld Feld
+     * @param geandert array der geänderten Felder, wenn null komplett neu zeichnen
      */
-    void spielfeldUpdaten(FeldBesetztStatus[] feld) throws RemoteException;
+    void spielfeldUpdaten(FeldBesetztStatus[] feld, int[] geandert) throws RemoteException;
 
     /**
      * Namen der Spieler übermitteln

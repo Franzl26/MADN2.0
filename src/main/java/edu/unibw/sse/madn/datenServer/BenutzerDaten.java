@@ -1,6 +1,6 @@
 package edu.unibw.sse.madn.datenServer;
 
-import edu.unibw.sse.madn.sonstiges.Benutzer;
+import edu.unibw.sse.madn.benutzerVerwaltung.Benutzer;
 
 public interface BenutzerDaten {
     /**

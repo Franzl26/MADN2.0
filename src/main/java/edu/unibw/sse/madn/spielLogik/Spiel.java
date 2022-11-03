@@ -1,8 +1,15 @@
 package edu.unibw.sse.madn.spielLogik;
 
+import edu.unibw.sse.madn.serverKomm.AnClientSendenSpiel;
 import edu.unibw.sse.madn.serverKomm.Sitzung;
 
 public interface Spiel {
+    /**
+     * setzt Kanal mit dem der Server Nachrichten an den Client senden kann
+     * @param raumauswahl AnClientSendenSpiel
+     */
+    void kommunikationskanalSetzen(AnClientSendenSpiel raumauswahl);
+
     /**
      * Spielzug einreichen
      * @param sitzung Sitzung
@@ -20,7 +27,7 @@ public interface Spiel {
     /**
      * Spiel Verlassen
      * @param sitzung Sitzung
-     * @return Spielstatistik
+     * @return Spielstatistik oder null bei Fehler
      */
     SpielStatistik spielVerlassen(Sitzung sitzung);
 }

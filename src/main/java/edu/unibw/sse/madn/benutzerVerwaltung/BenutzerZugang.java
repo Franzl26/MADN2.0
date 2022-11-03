@@ -1,5 +1,7 @@
 package edu.unibw.sse.madn.benutzerVerwaltung;
 
+import edu.unibw.sse.madn.serverKomm.Sitzung;
+
 public interface BenutzerZugang {
     /**
      * Benutzer anmelden
@@ -19,7 +21,7 @@ public interface BenutzerZugang {
 
     /**
      * meldet Client ab
-     * @param benutzername Benutzername
+     * @param sitzung Sitzung
      */
-    void abmelden(String benutzername);
+    void abmelden(Sitzung sitzung);
 }

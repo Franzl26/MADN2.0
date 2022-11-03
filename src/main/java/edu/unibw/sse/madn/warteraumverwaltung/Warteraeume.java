@@ -1,7 +1,10 @@
 package edu.unibw.sse.madn.warteraumverwaltung;
 
-/**
- * Enthält alle Warteräume mit Namen/Id
- */
-public class Warteraeume {
+import java.util.Collection;
+
+public interface Warteraeume {
+    /**
+     * @return Eine Collection aller Warteräume
+     */
+    Collection<Warteraum> warteraeume();
 }

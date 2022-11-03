@@ -15,7 +15,7 @@ public interface ServerVerbindung extends Remote {
      * @param passwort Passwort verschlüsselt
      * @return null: Fehler, sonst Sitzung
      */
-    Sitzung anmelden(ClientCallback client, String benutzername, String passwort) throws RemoteException;
+    Sitzung anmelden(ClientCallback client, String benutzername, byte[] passwort) throws RemoteException;
 
     /**
      * Benutzer registrieren
@@ -24,7 +24,7 @@ public interface ServerVerbindung extends Remote {
      * @param pw2 wiederholtes Passwort verschlüsselt
      * @return Fehler oder Erfolg
      */
-    RegistrierenRueckgabe registrieren(String benutzername, String pw1, String pw2) throws RemoteException;
+    RegistrierenRueckgabe registrieren(String benutzername, byte[] pw1, byte[] pw2) throws RemoteException;
 
     /**
      *

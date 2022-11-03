@@ -1,8 +1,15 @@
 package edu.unibw.sse.madn.warteraumverwaltung;
 
+import edu.unibw.sse.madn.serverKomm.AnClientSendenRaumauswahl;
 import edu.unibw.sse.madn.serverKomm.Sitzung;
 
 public interface Raumauswahl {
+    /**
+     * setzt Kanal mit dem der Server Nachrichten an den Client senden kann
+     * @param raumauswahl AnClientSendenRaumauswahl
+     */
+    void kommunikationskanalSetzen(AnClientSendenRaumauswahl raumauswahl);
+
     /**
      * meldet Client für die aktualisierung der Warteräume an
      * @param sitzung Sitzung

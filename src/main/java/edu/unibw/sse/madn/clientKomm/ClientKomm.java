@@ -1,46 +1,57 @@
 package edu.unibw.sse.madn.clientKomm;
 
+import edu.unibw.sse.madn.ansicht.RaumauswahlUpdaten;
+import edu.unibw.sse.madn.ansicht.SpielUpdaten;
+import edu.unibw.sse.madn.ansicht.WarteraumUpdaten;
 import edu.unibw.sse.madn.benutzerVerwaltung.RegistrierenRueckgabe;
-import edu.unibw.sse.madn.serverKomm.Sitzung;
-import edu.unibw.sse.madn.sonstiges.SpielfeldKonfigurationBytes;
+import edu.unibw.sse.madn.datenServer.SpielfeldKonfigurationBytes;
 import edu.unibw.sse.madn.spielLogik.SpielStatistik;
 import edu.unibw.sse.madn.spielLogik.WuerfelnRueckgabe;
 import edu.unibw.sse.madn.spielLogik.ZiehenRueckgabe;
 
-import java.rmi.RemoteException;
-
 public interface ClientKomm {
-    // Anmelden / Registrieren
+    /**
+     * @return Benutzernamen des Clients der bei der Anmeldung verwendet wurde
+     */
+    String benutzernamenHolen();
+
+    // Anmelden / Registrieren / Abmelden
     /**
      * Benutzer anmelden
-     * @param client Rückkanal zum Client
+     * @param ip Server IP
      * @param benutzername Benutzername
      * @param passwort Passwort verschlüsselt
      * @return erfolgreich: true, sonst false
      */
-    AllgemeinerReturnWert anmelden(ClientCallback client, String benutzername, String passwort) throws RemoteException;
+    AllgemeinerReturnWert anmelden(String ip, String benutzername, String passwort);
 
     /**
      * Benutzer registrieren
+     * @param ip Server IP
      * @param benutzername Benutzername
      * @param pw1 Passwort verschlüsselt
      * @param pw2 wiederholtes Passwort verschlüsselt
      * @return Fehler oder Erfolg
      */
-    RegistrierenRueckgabe registrieren(String benutzername, String pw1, String pw2) throws RemoteException;
+    RegistrierenRueckgabe registrieren(String ip, String benutzername, String pw1, String pw2);
+
+    /**
+     * meldet Client ab
+     */
+    void abmelden();
 
 
     // Designs
     /**
-     * @return List aller verfügbaren Designs/Spielfeld-Konfigurationen
+     * @return List aller verfügbaren Designs/Spielfeld-Konfigurationen oder null bei Fehler
      */
-    String[] designListeHolen() throws RemoteException;
+    String[] designListeHolen();
 
     /**
      * @param name Name des Designs
-     * @return die geladene Spielfeld-Konfiguration
+     * @return die geladene Spielfeld-Konfiguration oder null bei Fehler
      */
-    SpielfeldKonfigurationBytes spielfeldKonfigurationHolen(String name) throws RemoteException;
+    SpielfeldKonfigurationBytes spielfeldKonfigurationHolen(String name);
 
 
     // Warteraum
@@ -90,22 +101,37 @@ public interface ClientKomm {
     // Spiel
     /**
      * Spielzug einreichen
-     * @param sitzung Sitzung
      * @param von Feld von
      * @param nach Feld nach
      */
-    ZiehenRueckgabe figurZiehen(Sitzung sitzung, int von, int nach);
+    ZiehenRueckgabe figurZiehen(int von, int nach);
 
     /**
      * Würfeln
-     * @param sitzung Sitzung
      */
-    WuerfelnRueckgabe wuerfeln(Sitzung sitzung);
+    WuerfelnRueckgabe wuerfeln();
 
     /**
      * Spiel Verlassen
-     * @param sitzung Sitzung
-     * @return Spielstatistik
+     * @return Spielstatistik oder null bei Fehler
      */
-    SpielStatistik spielVerlassen(Sitzung sitzung);
+    SpielStatistik spielVerlassen();
+
+    /**
+     * Setzt für ClientCallback den Callback in den Dialog Raumauswahl
+     * @param update UpdateInterface
+     */
+    void raumauswahlUpdaterSetzen(RaumauswahlUpdaten update);
+
+    /**
+     * Setzt für ClientCallback den Callback in den Dialog Warteraum
+     * @param update UpdateInterface
+     */
+    void warteraumUpdaterSetzen(WarteraumUpdaten update);
+
+    /**
+     * Setzt für ClientCallback den Callback in den Dialog Spiel
+     * @param update UpdateInterface
+     */
+    void spielUpdaterSetzen(SpielUpdaten update);
 }

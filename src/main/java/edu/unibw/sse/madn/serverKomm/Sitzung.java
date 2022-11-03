@@ -1,6 +1,7 @@
 package edu.unibw.sse.madn.serverKomm;
 
-import edu.unibw.sse.madn.sonstiges.SpielfeldKonfigurationBytes;
+import edu.unibw.sse.madn.clientKomm.ClientCallback;
+import edu.unibw.sse.madn.datenServer.SpielfeldKonfigurationBytes;
 import edu.unibw.sse.madn.spielLogik.SpielStatistik;
 import edu.unibw.sse.madn.spielLogik.WuerfelnRueckgabe;
 import edu.unibw.sse.madn.spielLogik.ZiehenRueckgabe;
@@ -9,6 +10,12 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface Sitzung extends Remote {
+    // Nutzerverwaltung
+    /**
+     * meldet Client ab
+     */
+    void abmelden() throws RemoteException;
+
     // Designs
     /**
      * @return List aller verfügbaren Designs/Spielfeld-Konfigurationen
@@ -17,7 +24,7 @@ public interface Sitzung extends Remote {
 
     /**
      * @param name Name des Designs
-     * @return die geladene Spielfeld-Konfiguration
+     * @return die geladene Spielfeld-Konfiguration oder null bei Fehler
      */
     SpielfeldKonfigurationBytes spielfeldKonfigurationHolen(String name) throws RemoteException;
 
@@ -69,22 +76,29 @@ public interface Sitzung extends Remote {
     // Spiel
     /**
      * Spielzug einreichen
-     * @param sitzung Sitzung
      * @param von Feld von
      * @param nach Feld nach
      */
-    ZiehenRueckgabe figurZiehen(Sitzung sitzung, int von, int nach) throws RemoteException;
+    ZiehenRueckgabe figurZiehen(int von, int nach) throws RemoteException;
 
     /**
      * Würfeln
-     * @param sitzung Sitzung
      */
-    WuerfelnRueckgabe wuerfeln(Sitzung sitzung) throws RemoteException;
+    WuerfelnRueckgabe wuerfeln() throws RemoteException;
 
     /**
      * Spiel Verlassen
-     * @param sitzung Sitzung
-     * @return Spielstatistik
+     * @return Spielstatistik oder null bei Fehler
      */
-    SpielStatistik spielVerlassen(Sitzung sitzung) throws RemoteException;
+    SpielStatistik spielVerlassen() throws RemoteException;
+
+    /**
+     * @return Benutzernamen der Session
+     */
+    String benutzername();
+
+    /**
+     * @return Client Callback der Session
+     */
+    ClientCallback clientCallback();
 }
