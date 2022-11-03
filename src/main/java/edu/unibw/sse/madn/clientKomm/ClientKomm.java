@@ -55,6 +55,14 @@ public interface ClientKomm {
 
 
     // Warteraum
+
+    /**
+     * meldet Client für die aktualisierung der Warteräume an
+     *
+     * @return angemeldet: RET_ERFOLGREICH, Verbindungsfehler RET_VERBINDUNG_ABGEBROCHEN, sonst RET_FEHLER
+     */
+    AllgemeinerReturnWert fuerWarteraumUpdatesAnmelden();
+
     /**
      * Warteraum erstellen
      * @return Warteraum erstellt: RET_ERFOLGREICH, Verbindungsfehler RET_VERBINDUNG_ABGEBROCHEN, sonst RET_FEHLER

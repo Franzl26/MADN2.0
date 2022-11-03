@@ -39,6 +39,7 @@ public class ServerVerbindungImpl implements ServerVerbindung {
 
     @Override
     public Sitzung anmelden(ClientCallback client, String benutzername, byte[] passwort) throws RemoteException {
+        if (client == null || benutzername == null || passwort == null) return null;
         String pw = passwortEntschluesseln(passwort, keyPair.getPrivate());
         if (pw == null) return null;
         if (!benutzerZugang.anmelden(benutzername, pw)) return null;
@@ -47,6 +48,7 @@ public class ServerVerbindungImpl implements ServerVerbindung {
 
     @Override
     public RegistrierenRueckgabe registrieren(String benutzername, byte[] passwort1, byte[] passwort2) throws RemoteException {
+        if (benutzername == null || passwort1 == null || passwort2 == null) return null;
         String pw1 = passwortEntschluesseln(passwort1, keyPair.getPrivate());
         String pw2 = passwortEntschluesseln(passwort2, keyPair.getPrivate());
         if (pw1 == null || pw2 == null) return RegistrierenRueckgabe.REG_VERBINDUNG_ABGEBROCHEN;

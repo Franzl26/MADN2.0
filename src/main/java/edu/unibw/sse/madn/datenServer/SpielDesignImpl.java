@@ -14,4 +14,15 @@ public class SpielDesignImpl implements SpielDesign {
     public SpielfeldKonfigurationBytes spielfeldKonfigurationHolen(String name) {
         return SpielfeldKonfigurationBytesImpl.loadBoardKonfiguration("./resources/server/designs/" + name + "/");
     }
+
+    @Override
+    public boolean existiertDesign(String design) {
+        File f = new File("./resources/server/designs/");
+        String[] list = f.list();
+        if (list == null) return false;
+        for (String s : list) {
+            if (s.equals(design)) return true;
+        }
+        return false;
+    }
 }

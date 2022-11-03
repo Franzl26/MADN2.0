@@ -11,12 +11,14 @@ import java.rmi.RemoteException;
 
 public interface Sitzung extends Remote {
     // Nutzerverwaltung
+
     /**
      * meldet Client ab
      */
     void abmelden() throws RemoteException;
 
     // Designs
+
     /**
      * @return List aller verfügbaren Designs/Spielfeld-Konfigurationen
      */
@@ -30,14 +32,24 @@ public interface Sitzung extends Remote {
 
 
     // Warteraum
+
+    /**
+     * meldet Client für die aktualisierung der Warteräume an
+     *
+     * @return true wenn angemeldet, sonst false
+     */
+    boolean fuerWarteraumUpdatesAnmelden() throws RemoteException;
+
     /**
      * Warteraum erstellen
+     *
      * @return Warteraum erstellt: true, sonst false
      */
     boolean warteraumErstellen() throws RemoteException;
 
     /**
      * Warteraum beitreten
+     *
      * @param raumId Raum-ID
      * @return Warteraum beigetreten: true, sonst false
      */
@@ -50,33 +62,39 @@ public interface Sitzung extends Remote {
 
     /**
      * Bot hinzufügen
+     *
      * @return Bot hinzugefügt: true, sonst false
      */
     boolean botHinzufuegen() throws RemoteException;
 
     /**
      * Bot Entfernen
+     *
      * @return Bot entfernt: true, sonst false
      */
     boolean botEntfernen() throws RemoteException;
 
     /**
      * Spiel starten
+     *
      * @return Spiel gestartet: true, sonst false
      */
     boolean spielStarten() throws RemoteException;
 
     /**
      * Spieldesign ändern
+     *
      * @param design Design
      */
     void designAnpassen(String design) throws RemoteException;
 
 
     // Spiel
+
     /**
      * Spielzug einreichen
-     * @param von Feld von
+     *
+     * @param von  Feld von
      * @param nach Feld nach
      */
     ZiehenRueckgabe figurZiehen(int von, int nach) throws RemoteException;
@@ -88,6 +106,7 @@ public interface Sitzung extends Remote {
 
     /**
      * Spiel Verlassen
+     *
      * @return Spielstatistik oder null bei Fehler
      */
     SpielStatistik spielVerlassen() throws RemoteException;

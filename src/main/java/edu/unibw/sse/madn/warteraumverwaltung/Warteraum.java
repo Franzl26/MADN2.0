@@ -4,7 +4,7 @@ public interface Warteraum {
     /**
      * @return id des Warteraums
      */
-    int id();
+    long id();
 
     /**
      * @return Array der Spielernamen im Warteraum, Länge muss Spieleranzahl+Botanzahl entsprechen

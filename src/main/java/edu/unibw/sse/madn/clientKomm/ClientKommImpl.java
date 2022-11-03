@@ -98,6 +98,15 @@ public class ClientKommImpl implements ClientKomm {
     }
 
     @Override
+    public AllgemeinerReturnWert fuerWarteraumUpdatesAnmelden() {
+        try {
+            return sitzung.fuerWarteraumUpdatesAnmelden() ? RET_ERFOLGREICH : RET_FEHLER;
+        } catch (RemoteException e) {
+            return RET_VERBINDUNG_ABGEBROCHEN;
+        }
+    }
+
+    @Override
     public AllgemeinerReturnWert warteraumErstellen() {
         try {
             return sitzung.warteraumErstellen() ? RET_ERFOLGREICH : RET_FEHLER;
@@ -126,7 +135,7 @@ public class ClientKommImpl implements ClientKomm {
     @Override
     public AllgemeinerReturnWert botHinzufuegen() {
         try {
-            return sitzung.botHinzufuegen()?RET_ERFOLGREICH:RET_FEHLER;
+            return sitzung.botHinzufuegen() ? RET_ERFOLGREICH : RET_FEHLER;
         } catch (RemoteException e) {
             return RET_VERBINDUNG_ABGEBROCHEN;
         }
@@ -135,7 +144,7 @@ public class ClientKommImpl implements ClientKomm {
     @Override
     public AllgemeinerReturnWert botEntfernen() {
         try {
-            return sitzung.botEntfernen()?RET_ERFOLGREICH:RET_FEHLER;
+            return sitzung.botEntfernen() ? RET_ERFOLGREICH : RET_FEHLER;
         } catch (RemoteException e) {
             return RET_VERBINDUNG_ABGEBROCHEN;
         }
@@ -144,7 +153,7 @@ public class ClientKommImpl implements ClientKomm {
     @Override
     public AllgemeinerReturnWert spielStarten() {
         try {
-            return sitzung.spielStarten()?RET_ERFOLGREICH:RET_FEHLER;
+            return sitzung.spielStarten() ? RET_ERFOLGREICH : RET_FEHLER;
         } catch (RemoteException e) {
             return RET_VERBINDUNG_ABGEBROCHEN;
         }
@@ -161,7 +170,7 @@ public class ClientKommImpl implements ClientKomm {
     @Override
     public ZiehenRueckgabe figurZiehen(int von, int nach) {
         try {
-            return sitzung.figurZiehen(von,nach);
+            return sitzung.figurZiehen(von, nach);
         } catch (RemoteException e) {
             return ZiehenRueckgabe.ZIEHEN_VERBINDUNG_ABGEBROCHEN;
         }

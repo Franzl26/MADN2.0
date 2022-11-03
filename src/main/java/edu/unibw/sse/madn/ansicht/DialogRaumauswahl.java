@@ -25,6 +25,14 @@ public class DialogRaumauswahl extends AnchorPane implements RaumauswahlUpdaten 
     public DialogRaumauswahl(ClientKomm komm) {
         this.komm = komm;
         komm.raumauswahlUpdaterSetzen(this);
+        AllgemeinerReturnWert retAn = komm.fuerWarteraumUpdatesAnmelden();
+        switch (retAn) {
+            case RET_ERFOLGREICH, RET_FEHLER -> {}
+            case RET_VERBINDUNG_ABGEBROCHEN -> {
+                Meldungen.kommunikationAbgebrochen();
+                System.exit(0);
+            }
+        }
         Canvas nameCanvas = new Canvas(300, 40);
         GraphicsContext gcName = nameCanvas.getGraphicsContext2D();
         gcName.setFont(Font.font(30));

@@ -45,6 +45,12 @@ public class SitzungImpl implements Sitzung{
     }
 
     @Override
+    public boolean fuerWarteraumUpdatesAnmelden() {
+        raumauswahl.fuerUpdatesAnmelden(this);
+        return true;
+    }
+
+    @Override
     public boolean warteraumErstellen() throws RemoteException {
         return raumauswahl.warteraumErstellen(this);
     }
@@ -76,6 +82,7 @@ public class SitzungImpl implements Sitzung{
 
     @Override
     public void designAnpassen(String design) throws RemoteException {
+        if (!spielDesign.existiertDesign(design)) return;
         raumauswahl.designAnpassen(this, design);
     }
 
