@@ -26,7 +26,7 @@ import java.util.Arrays;
 import static edu.unibw.sse.madn.ansicht.Querschnitt.drawBoardAll;
 import static edu.unibw.sse.madn.ansicht.Querschnitt.drawBoardSingleFieldAll;
 
-public class DialogSpiel extends AnchorPane implements SpielUpdaten{
+public class DialogSpiel extends AnchorPane implements SpielUpdaten {
     private final SpielfeldKonfiguration config;
     private final GraphicsContext gcBoard;
     private final GraphicsContext gcDice;
@@ -57,7 +57,7 @@ public class DialogSpiel extends AnchorPane implements SpielUpdaten{
             switch (ret) { // todo texte
                 case WUERFELN_NICHT_DRAN -> Meldungen.zeigeInformation("", "");
                 case WUERFELN_FALSCHE_PHASE -> Meldungen.zeigeInformation("", "");
-                case WUERFELN_ERFOLGREICH -> {
+                case WUERFELN_ERFOLGREICH, WUERFELN_KEIN_ZUG_MOEGLICH -> {
                 }
                 case WUERFELN_VERBINDUNG_ABGEBROCHEN -> {
                     Meldungen.kommunikationAbgebrochen();
@@ -181,13 +181,13 @@ public class DialogSpiel extends AnchorPane implements SpielUpdaten{
     @Override
     public void spielNamenUpdaten(String[] namen) {
         this.namen = namen;
-        Platform.runLater(() -> drawNames(namen,aktiverSpieler));
+        Platform.runLater(() -> drawNames(namen, aktiverSpieler));
     }
 
     @Override
     public void aktuellenSpielerSetzen(int spieler) {
         aktiverSpieler = spieler;
-        Platform.runLater(() -> drawNames(namen,aktiverSpieler));
+        Platform.runLater(() -> drawNames(namen, aktiverSpieler));
     }
 
     @Override
@@ -197,12 +197,12 @@ public class DialogSpiel extends AnchorPane implements SpielUpdaten{
 
     @Override
     public void wuerfelnVorbei() {
-        Platform.runLater(() -> Meldungen.zeigeInformation("Zeit abgelaufen","Deine Zeit zum Würfeln ist abgelaufen, der Server hat für dich gewürfelt und gezogen."));
+        Platform.runLater(() -> Meldungen.zeigeInformation("Zeit abgelaufen", "Deine Zeit zum Würfeln ist abgelaufen, der Server hat für dich gewürfelt und gezogen."));
     }
 
     @Override
     public void ziehenVorbei() {
-        Platform.runLater(() -> Meldungen.zeigeInformation("Zeit abgelaufen","Deine Zeit zum Ziehen ist abgelaufen, der Server hat für dich gezogen."));
+        Platform.runLater(() -> Meldungen.zeigeInformation("Zeit abgelaufen", "Deine Zeit zum Ziehen ist abgelaufen, der Server hat für dich gezogen."));
     }
 
     @Override

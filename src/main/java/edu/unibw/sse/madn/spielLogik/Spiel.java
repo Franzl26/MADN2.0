@@ -6,9 +6,9 @@ import edu.unibw.sse.madn.serverKomm.Sitzung;
 public interface Spiel {
     /**
      * setzt Kanal mit dem der Server Nachrichten an den Client senden kann
-     * @param raumauswahl AnClientSendenSpiel
+     * @param spiel AnClientSendenSpiel
      */
-    void kommunikationskanalSetzen(AnClientSendenSpiel raumauswahl);
+    void kommunikationskanalSetzen(AnClientSendenSpiel spiel);
 
     /**
      * Spielzug einreichen
