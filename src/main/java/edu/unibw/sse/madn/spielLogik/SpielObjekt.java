@@ -3,6 +3,7 @@ package edu.unibw.sse.madn.spielLogik;
 import edu.unibw.sse.madn.serverKomm.AnClientSendenSpiel;
 import edu.unibw.sse.madn.serverKomm.Sitzung;
 
+import java.rmi.RemoteException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -13,9 +14,9 @@ import static java.lang.Thread.sleep;
 public class SpielObjekt {
     private static final int BOT_WAIT_WUERFELN = 1000;
     private static final int BOT_WAIT_ZIEHEN = 2000;
-    private static final int DELAY_WUERFELN = 10000;
-    private static final int DELAY_SPIELZUG = 30000;
-    private static final int DELAY_WAITING = 5000;
+    private static final int DELAY_WUERFELN = 1000000;
+    private static final int DELAY_SPIELZUG = 3000000;
+    private static final int DELAY_WAITING = 500000;
 
     private final SpielStatistikImpl spielStatistik;
     private final AnClientSendenSpiel anClient;
@@ -30,7 +31,7 @@ public class SpielObjekt {
     private final int spielerAnzahl;
     private final FeldBesetztStatus[] boardState;
     private int aktiverSpieler = -1;
-    private int zahlGewuerfelt = 0;
+    private int zahlGewuerfelt = -5;
     private int anzahlWuerfeln = -1;
 
     private Timer timerWuerfeln = new Timer();
@@ -48,13 +49,13 @@ public class SpielObjekt {
         finished = new boolean[spielerAnzahl];
 
         if (spielerAnzahl == 2) {
-            namen[0] = (clients[0] == null ? "Bot0" : clients[0].benutzername());
-            namen[1] = (clients[1] == null ? "Bot1" : clients[1].benutzername());
+            namen[0] = (clients[0] == null ? "Bot0" : namenHolen(clients[0]));
+            namen[1] = (clients[1] == null ? "Bot1" : namenHolen(clients[1]));
             felderVonSpieler[0] = FELD_SPIELER1;
             felderVonSpieler[1] = FELD_SPIELER3;
         } else {
             for (int i = 0; i < spielerAnzahl; i++) {
-                namen[i] = (clients[i] == null ? "Bot" + i : clients[i].benutzername());
+                namen[i] = (clients[i] == null ? "Bot" + i : namenHolen(clients[i]));
                 felderVonSpieler[i] = switch (i) {
                     case 0 -> FELD_SPIELER1;
                     case 1 -> FELD_SPIELER2;
@@ -68,7 +69,10 @@ public class SpielObjekt {
         boardState = feldFuellen(spielerAnzahl);
 
         Timer t = new Timer("startGame");
-        t.schedule(new StartGame(), 3000);
+        t.schedule(new StartGame(), 1000);
+
+        displayNewStateAll(boardState, null);
+        aktivenSpielerSendenAlle(-1);
     }
 
     public synchronized ZiehenRueckgabe submitMove(Sitzung sitzung, int from, int to) {
@@ -86,9 +90,10 @@ public class SpielObjekt {
      * move muss erlaubt sein, wird nur noch gesetzt + ggf Punish + Spieler informiert
      */
     private synchronized ZiehenRueckgabe submitMoveIntern(int from, int to) {
+        if (aktiverSpieler < 0) return ZiehenRueckgabe.ZIEHEN_NICHT_DRAN;
         timerZiehen.cancel();
         timerWaiting.cancel();
-        System.out.println("Submit " + namen[aktiverSpieler] + ": " + from + " -> " + to);
+        //System.out.println("Submit " + namen[aktiverSpieler] + ": " + from + " -> " + to);
         int[] changed = new int[]{from, to, -1, -1, -1}; // from, to, strafe in loch, jmd geschlagen, strafe Figur die weg
         // wenn geschlagen zurücksetzen
         FeldBesetztStatus fieldStateFrom = boardState[from];
@@ -197,14 +202,13 @@ public class SpielObjekt {
 
     public synchronized WuerfelnRueckgabe throwDice(Sitzung sitzung) {
         int i = isInGame(sitzung);
-        if (i == -1 || i != aktiverSpieler) return WuerfelnRueckgabe.WUERFELN_NICHT_DRAN;
+        if (i == -1 || i != aktiverSpieler || zahlGewuerfelt < -1) return WuerfelnRueckgabe.WUERFELN_NICHT_DRAN;
         return throwDiceIntern();
     }
 
     private synchronized WuerfelnRueckgabe throwDiceIntern() {
         timerWuerfeln.cancel();
         if (zahlGewuerfelt > 0) {
-            System.err.println("Die Prüfung findet doch statt?");
             if (getValidMove(boardState, felderVonSpieler[aktiverSpieler], zahlGewuerfelt)[0] != -1) return WuerfelnRueckgabe.WUERFELN_FALSCHE_PHASE;
         }
         if (anzahlWuerfeln == 0) return WuerfelnRueckgabe.WUERFELN_NICHT_DRAN;
@@ -212,7 +216,7 @@ public class SpielObjekt {
         zahlGewuerfelt = (int) (Math.random() * 6 + 1);
 
         spielStatistik.incZahlGewuerfelt(aktiverSpieler, zahlGewuerfelt - 1);
-        System.out.println("throw diceIntern: " + namen[aktiverSpieler] + " : " + zahlGewuerfelt);
+        //System.out.println("throw diceIntern: " + namen[aktiverSpieler] + " : " + zahlGewuerfelt);
         anzahlWuerfeln--;
         displayDiceAll(zahlGewuerfelt);
         if (zahlGewuerfelt == 6) {
@@ -233,8 +237,8 @@ public class SpielObjekt {
     }
 
     private void nextMove(boolean naechstenErzwingen) {
+        zahlGewuerfelt = -5;
         new Thread(() -> {
-            zahlGewuerfelt = -1;
             try {
                 if (anzahlFinished == spielerAnzahl) {
                     beenden();
@@ -242,18 +246,20 @@ public class SpielObjekt {
                     return;
                 }
                 if (anzahlWuerfeln < 1 || naechstenErzwingen) {
-                    System.out.println("set next");
+                    //System.out.println("set next");
                     aktiverSpieler = (aktiverSpieler + 1) % spielerAnzahl;
+                    while (finished[aktiverSpieler]) aktiverSpieler = (aktiverSpieler + 1) % spielerAnzahl;
                     try {
                         sleep(1000);
                     } catch (InterruptedException e) {
                         System.err.println("schlafen unterbrochen");
                     }
-                    while (finished[aktiverSpieler]) aktiverSpieler = (aktiverSpieler + 1) % spielerAnzahl;
-                    anzahlWuerfeln = getAnzahlWuerfelnNext(aktiverSpieler);
-                    displayNewStateAll(boardState, new int[]{});
                     aktivenSpielerSendenAlle(aktiverSpieler);
+                    displayDiceAll(0);
+                    anzahlWuerfeln = getAnzahlWuerfelnNext(aktiverSpieler);
+                    //displayNewStateAll(boardState, new int[]{});
                 }
+                zahlGewuerfelt = -1;
                 if (clients[aktiverSpieler] == null) {
                     doBotMove(aktiverSpieler, true);
                 } else {
@@ -335,17 +341,15 @@ public class SpielObjekt {
         return -1;
     }
 
-    public synchronized SpielStatistik leaveGame(Sitzung sitzung) {
-        removePlayerIntern(sitzung);
-        return spielStatistik;
+    public SpielStatistik leaveGame(Sitzung sitzung) {
+        return removePlayerIntern(sitzung);
     }
 
-    private synchronized void removePlayerIntern(Sitzung sitzung) {
+    private synchronized SpielStatistik removePlayerIntern(Sitzung sitzung) {
         int i = isInGame(sitzung);
-        if (i == -1) return;
+        if (i == -1) return null;
         clients[i] = null;
         namen[i] = "Bot" + i;
-        System.out.println("removed player " + i);
         for (int j = 0; j < spielerAnzahl; j++) {
             if (clients[j] != null) break;
             if (j == spielerAnzahl - 1) {
@@ -353,9 +357,11 @@ public class SpielObjekt {
                 break;
             }
         }
-        System.out.println("Spiel verlassen: " + sitzung.benutzername());
+        SpielStatistik spielStatistik1 = spielStatistik.holeZumSenden();
+        //System.out.println("Spiel verlassen: " + namenHolen(sitzung));
         spielStatistik.namenSetzen(namen);
         neueNamenSendenAlle(namen.clone());
+        return spielStatistik1;
     }
 
     private void beenden() {
@@ -449,7 +455,8 @@ public class SpielObjekt {
     }
 
     private void spielVorbeiSenden(Sitzung sitzung) {
-        new Thread(() -> anClient.spielVorbei(sitzung, spielStatistik)).start();
+        SpielStatistik zumSenden = spielStatistik.holeZumSenden();
+        new Thread(() -> anClient.spielVorbei(sitzung, zumSenden)).start();
     }
 
     private int isInGame(Sitzung sitzung) {
@@ -462,7 +469,9 @@ public class SpielObjekt {
     private class StartGame extends TimerTask {
         @Override
         public void run() {
-            aktiverSpieler = spielerAnzahl - 1;
+            neueNamenSendenAlle(namen);
+            displayNewStateAll(boardState, null);
+            //aktiverSpieler = spielerAnzahl - 1;
             nextMove(true);
         }
     }
@@ -476,7 +485,6 @@ public class SpielObjekt {
 
         @Override
         public void run() {
-            System.out.println("wuerfeln vorbei: " + spieler);
             if (zahlGewuerfelt < 1 && spieler == aktiverSpieler) {
                 doBotMove(spieler, false);
                 boolean ret = anClient.wuerfelnVorbei(clients[spieler]);
@@ -494,7 +502,6 @@ public class SpielObjekt {
 
         @Override
         public void run() {
-            System.out.println("ziehen vorbei: " + spieler);
             if (spieler == aktiverSpieler) {
                 doBotMove(spieler, false);
                 boolean ret = anClient.ziehenVorbei(clients[spieler]);
@@ -512,11 +519,19 @@ public class SpielObjekt {
 
         @Override
         public void run() {
-            System.out.println("waiting vorbei: " + spieler);
             if (spieler == aktiverSpieler) {
                 boolean ret = anClient.gifAnzeigen(clients[spieler]);
                 if (!ret) removePlayerIntern(clients[spieler]);
             }
+        }
+    }
+
+    private String namenHolen(Sitzung sitzung) {
+        try {
+            return sitzung.benutzername();
+        } catch (RemoteException e) {
+            System.err.println("Benutzername konnte nicht geholt werden");
+            return "ERROR";
         }
     }
 }

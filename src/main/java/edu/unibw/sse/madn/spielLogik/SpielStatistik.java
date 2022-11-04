@@ -1,6 +1,8 @@
 package edu.unibw.sse.madn.spielLogik;
 
-public interface SpielStatistik {
+import java.io.Serializable;
+
+public interface SpielStatistik extends Serializable {
     /**
      * @return die gewürfelten Zahlen nach Spieler und 1-6
      */
@@ -24,7 +26,7 @@ public interface SpielStatistik {
     /**
      * @return die Namen der Spieler in der Reihenfolge ihrer Platzierung
      */
-    String[] platzierung();
+    String[] platzierungen();
 
     /**
      * @return die Zeit zu der das Spiel gestartet wurde

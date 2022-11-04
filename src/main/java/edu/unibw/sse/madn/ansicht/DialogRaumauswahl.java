@@ -4,6 +4,7 @@ import edu.unibw.sse.madn.clientKomm.AllgemeinerReturnWert;
 import edu.unibw.sse.madn.clientKomm.ClientKomm;
 import edu.unibw.sse.madn.warteraumverwaltung.Warteraeume;
 import edu.unibw.sse.madn.warteraumverwaltung.Warteraum;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -24,13 +25,13 @@ public class DialogRaumauswahl extends AnchorPane implements RaumauswahlUpdaten 
 
     public DialogRaumauswahl(ClientKomm komm) {
         this.komm = komm;
-        komm.raumauswahlUpdaterSetzen(this);
+
         AllgemeinerReturnWert retAn = komm.fuerWarteraumUpdatesAnmelden();
         switch (retAn) {
             case RET_ERFOLGREICH, RET_FEHLER -> {}
             case RET_VERBINDUNG_ABGEBROCHEN -> {
                 Meldungen.kommunikationAbgebrochen();
-                System.exit(0);
+                System.exit(-1);
             }
         }
         Canvas nameCanvas = new Canvas(300, 40);
@@ -52,7 +53,7 @@ public class DialogRaumauswahl extends AnchorPane implements RaumauswahlUpdaten 
                 }
                 case RET_VERBINDUNG_ABGEBROCHEN -> {
                     Meldungen.kommunikationAbgebrochen();
-                    System.exit(0);
+                    System.exit(-1);
                 }
             }
         });
@@ -69,6 +70,7 @@ public class DialogRaumauswahl extends AnchorPane implements RaumauswahlUpdaten 
         AnchorPane.setBottomAnchor(exitButton, 10.0);
 
         getChildren().addAll(nameCanvas, roomsList, newGameButton, exitButton);
+        komm.raumauswahlUpdaterSetzen(this);
     }
 
     public void displayRooms(Warteraeume raume) {
@@ -89,7 +91,7 @@ public class DialogRaumauswahl extends AnchorPane implements RaumauswahlUpdaten 
                     }
                     case RET_VERBINDUNG_ABGEBROCHEN -> {
                         Meldungen.kommunikationAbgebrochen();
-                        System.exit(0);
+                        System.exit(-1);
                     }
                 }
             });
@@ -139,6 +141,6 @@ public class DialogRaumauswahl extends AnchorPane implements RaumauswahlUpdaten 
 
     @Override
     public void raeumeUpdaten(Warteraeume warteraeume) {
-        displayRooms(warteraeume);
+        Platform.runLater(() -> displayRooms(warteraeume));
     }
 }

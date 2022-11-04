@@ -31,7 +31,11 @@ public class ClientKommImpl implements ClientKomm {
     private Sitzung sitzung;
 
     public ClientKommImpl() {
-        clientCallback = new ClientCallbackImpl();
+        try {
+            clientCallback = new ClientCallbackImpl();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

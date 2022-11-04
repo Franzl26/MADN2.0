@@ -4,6 +4,7 @@ import edu.unibw.sse.madn.serverKomm.AnClientSendenSpiel;
 import edu.unibw.sse.madn.serverKomm.Sitzung;
 import edu.unibw.sse.madn.warteraumverwaltung.WarteraumCallback;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SpielImpl implements Spiel, SpielErstellen {
@@ -15,7 +16,12 @@ public class SpielImpl implements Spiel, SpielErstellen {
     public synchronized void spielErstellen(WarteraumCallback warteraum, Sitzung[] sitzungen, int bots, int spieler) {
         warteraumCallback = warteraum;
         Sitzung[] neueSitzungen = new Sitzung[bots + spieler];
-        if (spieler >= 0) System.arraycopy(sitzungen, 0, neueSitzungen, 0, spieler);
+        if (bots >= 1) {
+            neueSitzungen[0] = sitzungen[0];
+            System.arraycopy(sitzungen, 1, neueSitzungen, 2, spieler - 1);
+        } else {
+            System.arraycopy(sitzungen, 0, neueSitzungen, 0, spieler);
+        }
         SpielObjekt spiel = new SpielObjekt(this, anClient, neueSitzungen, bots + spieler);
         for (Sitzung s : sitzungen) {
             istInSpiel.put(s, spiel);
@@ -49,9 +55,11 @@ public class SpielImpl implements Spiel, SpielErstellen {
     }
 
     public synchronized void spielBeendet(SpielObjekt spielObjekt) {
+        ArrayList<Sitzung> entfernen = new ArrayList<>();
         istInSpiel.keySet().forEach(s -> {
-            if (istInSpiel.get(s).equals(spielObjekt)) istInSpiel.remove(s);
+            if (istInSpiel.get(s).equals(spielObjekt)) entfernen.add(s);
         });
+        entfernen.forEach(istInSpiel::remove);
         warteraumCallback.spielBeendet();
     }
 }

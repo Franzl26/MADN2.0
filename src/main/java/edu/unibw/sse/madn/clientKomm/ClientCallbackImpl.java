@@ -8,11 +8,15 @@ import edu.unibw.sse.madn.spielLogik.SpielStatistik;
 import edu.unibw.sse.madn.warteraumverwaltung.Warteraeume;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
-public class ClientCallbackImpl implements ClientCallback {
+public class ClientCallbackImpl extends UnicastRemoteObject implements ClientCallback {
     RaumauswahlUpdaten raumauswahl;
     WarteraumUpdaten warteraum;
     SpielUpdaten spiel;
+
+    protected ClientCallbackImpl() throws RemoteException {
+    }
 
     @Override
     public void raeumeUpdaten(Warteraeume warteraeume) throws RemoteException {

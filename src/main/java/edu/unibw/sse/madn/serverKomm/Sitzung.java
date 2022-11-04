@@ -114,10 +114,10 @@ public interface Sitzung extends Remote {
     /**
      * @return Benutzernamen der Session
      */
-    String benutzername();
+    String benutzername() throws RemoteException;
 
     /**
      * @return Client Callback der Session
      */
-    ClientCallback clientCallback();
+    ClientCallback clientCallback() throws RemoteException;
 }

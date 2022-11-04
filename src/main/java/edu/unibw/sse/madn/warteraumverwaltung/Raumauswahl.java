@@ -3,21 +3,26 @@ package edu.unibw.sse.madn.warteraumverwaltung;
 import edu.unibw.sse.madn.serverKomm.AnClientSendenRaumauswahl;
 import edu.unibw.sse.madn.serverKomm.Sitzung;
 
-public interface Raumauswahl {
+import java.io.Serializable;
+
+public interface Raumauswahl extends Serializable {
     /**
      * setzt Kanal mit dem der Server Nachrichten an den Client senden kann
+     *
      * @param raumauswahl AnClientSendenRaumauswahl
      */
     void kommunikationskanalSetzen(AnClientSendenRaumauswahl raumauswahl);
 
     /**
      * meldet Client für die aktualisierung der Warteräume an
-     * @param sitzung Sitzung
+     *
+     * @param sitzung      Sitzung
      */
     void fuerUpdatesAnmelden(Sitzung sitzung);
 
     /**
      * Warteraum erstellen
+     *
      * @param sitzung Sitzung
      * @return Warteraum erstellt: true, sonst false
      */
@@ -25,20 +30,23 @@ public interface Raumauswahl {
 
     /**
      * Warteraum beitreten
+     *
      * @param sitzung Sitzung
-     * @param raumId Raum-ID
+     * @param raumId  Raum-ID
      * @return Warteraum beigetreten: true, sonst false
      */
     boolean warteraumBeitreten(Sitzung sitzung, long raumId);
 
     /**
      * Warteraum verlassen
+     *
      * @param sitzung Sitzung
      */
     void warteraumVerlassen(Sitzung sitzung);
 
     /**
      * Bot hinzufügen
+     *
      * @param sitzung Sitzung
      * @return Bot hinzugefügt: true, sonst false
      */
@@ -46,6 +54,7 @@ public interface Raumauswahl {
 
     /**
      * Bot Entfernen
+     *
      * @param sitzung Sitzung
      * @return Bot entfernt: true, sonst false
      */
@@ -53,6 +62,7 @@ public interface Raumauswahl {
 
     /**
      * Spiel starten
+     *
      * @param sitzung sitzung
      * @return Spiel gestartet: true, sonst false
      */
@@ -60,8 +70,9 @@ public interface Raumauswahl {
 
     /**
      * Spieldesign ändern
+     *
      * @param sitzung Sitzung
-     * @param design Design
+     * @param design  Design
      */
     void designAnpassen(Sitzung sitzung, String design);
 }

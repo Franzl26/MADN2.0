@@ -12,16 +12,17 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.security.*;
 
-public class ServerVerbindungImpl implements ServerVerbindung {
+public class ServerVerbindungImpl extends UnicastRemoteObject implements ServerVerbindung {
     private final SpielDesign spielDesign;
     private final BenutzerZugang benutzerZugang;
     private final Raumauswahl raumauswahl;
     private final Spiel spiel;
     private KeyPair keyPair;
 
-    public ServerVerbindungImpl(SpielDesign spielDesign, BenutzerZugang benutzerZugang, Raumauswahl raumauswahl, Spiel spiel) {
+    public ServerVerbindungImpl(SpielDesign spielDesign, BenutzerZugang benutzerZugang, Raumauswahl raumauswahl, Spiel spiel) throws RemoteException {
         this.spielDesign = spielDesign;
         this.benutzerZugang = benutzerZugang;
         this.raumauswahl = raumauswahl;
@@ -32,9 +33,6 @@ public class ServerVerbindungImpl implements ServerVerbindung {
             System.err.println("Neues Schlüsselpaar konnte nicht erstellt werden");
             System.exit(-1);
         }
-        AnClientSendenImpl anClientSenden = new AnClientSendenImpl();
-        raumauswahl.kommunikationskanalSetzen(anClientSenden);
-        spiel.kommunikationskanalSetzen(anClientSenden);
     }
 
     @Override
@@ -71,5 +69,21 @@ public class ServerVerbindungImpl implements ServerVerbindung {
             System.err.println("Passwort entschlüsseln nicht möglich");
             return null;
         }
+    }
+
+    public SpielDesign getSpielDesign() {
+        return spielDesign;
+    }
+
+    public BenutzerZugang getBenutzerZugang() {
+        return benutzerZugang;
+    }
+
+    public Raumauswahl getRaumauswahl() {
+        return raumauswahl;
+    }
+
+    public Spiel getSpiel() {
+        return spiel;
     }
 }

@@ -4,6 +4,7 @@ import edu.unibw.sse.madn.serverKomm.AnClientSendenRaumauswahl;
 import edu.unibw.sse.madn.serverKomm.Sitzung;
 import edu.unibw.sse.madn.spielLogik.SpielErstellen;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -29,6 +30,8 @@ public class RaumauswahlImpl implements Raumauswahl, WarteraumCallback {
     @Override
     public void fuerUpdatesAnmelden(Sitzung sitzung) {
         clients.add(sitzung);
+        //System.out.println("raumauswahlupdates angemeldet: " + namenHolen(sitzung));
+        updateClients();
     }
 
     @Override
@@ -36,11 +39,11 @@ public class RaumauswahlImpl implements Raumauswahl, WarteraumCallback {
         if (!clients.contains(sitzung)) return false;
         if (raumAnzahl >= MAX_RAEUME) return false;
         WarteraumImpl neuerRaum = new WarteraumImpl();
-        neuerRaum.spielerHinzufuegen(sitzung);
+        neuerRaum.spielerHinzufuegen(sitzung, namenHolen(sitzung));
         idZuRaum.put(neuerRaum.id(), neuerRaum);
         istInRaum.put(sitzung, neuerRaum.id());
         raumAnzahl++;
-        clients.remove(sitzung);
+        clientEntfernen(sitzung);
         updateClients();
         updateRaum(neuerRaum);
         return true;
@@ -51,9 +54,9 @@ public class RaumauswahlImpl implements Raumauswahl, WarteraumCallback {
         WarteraumImpl raum = idZuRaum.get(raumId);
         if (raum == null) return false;
         if (raum.anzahlSpieler() >= 4) return false;
-        raum.spielerHinzufuegen(sitzung);
+        raum.spielerHinzufuegen(sitzung, namenHolen(sitzung));
         istInRaum.put(sitzung, raum.id());
-        clients.remove(sitzung);
+        clientEntfernen(sitzung);
         updateClients();
         updateRaum(raum);
         return true;
@@ -66,13 +69,12 @@ public class RaumauswahlImpl implements Raumauswahl, WarteraumCallback {
         Long id = istInRaum.get(sitzung);
         if (id == null) return;
         WarteraumImpl raum = idZuRaum.get(id);
-        raum.spielerEntfernen(sitzung);
+        raum.spielerEntfernen(sitzung, namenHolen(sitzung));
         if (raum.anzahlSpieler() <= 0) {
             idZuRaum.remove(id);
             raumAnzahl--;
-            alleInRaumEntfernen(id);
         }
-        clients.add(sitzung);
+        fuerUpdatesAnmelden(sitzung);
         istInRaum.remove(sitzung);
         updateClients();
         updateRaum(raum);
@@ -83,7 +85,7 @@ public class RaumauswahlImpl implements Raumauswahl, WarteraumCallback {
         Long id = istInRaum.get(sitzung);
         if (id == null) return false;
         WarteraumImpl raum = idZuRaum.get(id);
-        if (raum.anzahlSpieler() >= 4) return false;
+        if (raum.anzahlSpieler() + raum.botAnzahl() >= 4) return false;
         raum.botHinzufuegen();
         updateClients();
         updateRaum(raum);
@@ -107,13 +109,13 @@ public class RaumauswahlImpl implements Raumauswahl, WarteraumCallback {
         Long id = istInRaum.get(sitzung);
         if (id == null) return false;
         WarteraumImpl raum = idZuRaum.get(id);
-        if (raum.anzahlSpieler() <= 1) return false;
-        spielErstellen.spielErstellen(this, raum.clients(), raum.botAnzahl(), raum.anzahlSpieler() - raum.botAnzahl());
+        if (raum.anzahlSpieler() + raum.botAnzahl() <= 1) return false;
+        spielErstellen.spielErstellen(this, raum.clients(), raum.botAnzahl(), raum.anzahlSpieler());
         alleInRaumEntfernen(id);
         idZuRaum.remove(id);
         updateClients();
         startenFuerRaum(raum);
-        return false;
+        return true;
     }
 
     @Override
@@ -122,6 +124,7 @@ public class RaumauswahlImpl implements Raumauswahl, WarteraumCallback {
         if (id == null) return;
         WarteraumImpl raum = idZuRaum.get(id);
         raum.design(design);
+        //System.out.println("neues Design gesetzt: " + design);
     }
 
     @Override
@@ -165,12 +168,24 @@ public class RaumauswahlImpl implements Raumauswahl, WarteraumCallback {
     }
 
     private synchronized void alleInRaumEntfernen(long id) {
+        ArrayList<Sitzung> entfernen = new ArrayList<>();
         istInRaum.keySet().forEach(e -> {
-            if (istInRaum.get(e).equals(id)) istInRaum.remove(e);
+            if (istInRaum.get(e).equals(id)) entfernen.add(e);
         });
+        entfernen.forEach(istInRaum::remove);
     }
 
     private synchronized void clientEntfernen(Sitzung sitzung) {
         clients.remove(sitzung);
+        //System.out.println("raumauswahlupdates abgemeldet: " + namenHolen(sitzung));
+    }
+
+    private String namenHolen(Sitzung sitzung) {
+        try {
+            return sitzung.benutzername();
+        } catch (RemoteException e) {
+            System.err.println("Benutzername konnte nicht geholt werden");
+            return "ERROR";
+        }
     }
 }

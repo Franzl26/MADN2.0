@@ -1,6 +1,8 @@
 package edu.unibw.sse.madn.datenServer;
 
-public interface SpielDesign {
+import java.io.Serializable;
+
+public interface SpielDesign extends Serializable {
     /**
      * @return List aller verfügbaren Designs/Spielfeld-Konfigurationen
      */

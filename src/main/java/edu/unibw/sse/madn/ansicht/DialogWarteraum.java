@@ -2,6 +2,7 @@ package edu.unibw.sse.madn.ansicht;
 
 import edu.unibw.sse.madn.clientKomm.AllgemeinerReturnWert;
 import edu.unibw.sse.madn.clientKomm.ClientKomm;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -17,7 +18,7 @@ public class DialogWarteraum extends AnchorPane implements WarteraumUpdaten {
     private final ClientKomm komm;
     public DialogWarteraum(ClientKomm komm) {
         this.komm = komm;
-        komm.warteraumUpdaterSetzen(this);
+
         Canvas nameCanvas = new Canvas(200, 150);
         gcName = nameCanvas.getGraphicsContext2D();
 
@@ -30,7 +31,7 @@ public class DialogWarteraum extends AnchorPane implements WarteraumUpdaten {
                 case RET_FEHLER -> Meldungen.zeigeInformation("Warteraum voll", "Der Warteraum ist bereits voll, du kannst keinen Bot hinzufügen.");
                 case RET_VERBINDUNG_ABGEBROCHEN -> {
                     Meldungen.kommunikationAbgebrochen();
-                    System.exit(0);
+                    System.exit(-1);
                 }
             }
         });
@@ -43,7 +44,7 @@ public class DialogWarteraum extends AnchorPane implements WarteraumUpdaten {
                 case RET_FEHLER -> Meldungen.zeigeInformation("Kein Bot im Warteraum", "Es befindet sich kein Bot im Warteraum, der entfernt werden kann.");
                 case RET_VERBINDUNG_ABGEBROCHEN -> {
                     Meldungen.kommunikationAbgebrochen();
-                    System.exit(0);
+                    System.exit(-1);
                 }
             }
         });
@@ -53,7 +54,7 @@ public class DialogWarteraum extends AnchorPane implements WarteraumUpdaten {
             String[] liste = komm.designListeHolen();
             if (liste == null) {
                 Meldungen.kommunikationAbgebrochen();
-                System.exit(0);
+                System.exit(-1);
             }
             DialogDesignauswahl.dialogDesignauswahlStart(liste, komm);
         });
@@ -66,13 +67,15 @@ public class DialogWarteraum extends AnchorPane implements WarteraumUpdaten {
                 case RET_FEHLER -> Meldungen.zeigeInformation("Nicht genug Spieler im Warteraum", "Es sind weniger als 2 Spieler im Warteraum, dass Spiel kann nicht gestartet werden.");
                 case RET_VERBINDUNG_ABGEBROCHEN -> {
                     Meldungen.kommunikationAbgebrochen();
-                    System.exit(0);
+                    System.exit(-1);
                 }
             }
         });
         Button exitButton = new Button("Warteraum verlassen");
         exitButton.setPrefWidth(140);
         exitButton.addEventHandler(ActionEvent.ACTION, e -> verlassen());
+
+        komm.warteraumUpdaterSetzen(this);
 
         AnchorPane.setLeftAnchor(nameCanvas, 10.0);
         AnchorPane.setTopAnchor(nameCanvas, 10.0);
@@ -116,8 +119,10 @@ public class DialogWarteraum extends AnchorPane implements WarteraumUpdaten {
     }
 
     public void spielStarten(String design) {
-        DialogSpiel.dialogSpielStart(komm, design);
-        ((Stage) getScene().getWindow()).close();
+        Platform.runLater(() -> {
+            DialogSpiel.dialogSpielStart(komm, design);
+            ((Stage) getScene().getWindow()).close();
+        });
     }
 
     public static void dialogWarteraumStart(ClientKomm komm) {
@@ -134,7 +139,7 @@ public class DialogWarteraum extends AnchorPane implements WarteraumUpdaten {
 
     @Override
     public void warteraumNamenUpdaten(String[] namen) {
-        drawNames(namen);
+        Platform.runLater(() -> drawNames(namen));
     }
 
     @Override

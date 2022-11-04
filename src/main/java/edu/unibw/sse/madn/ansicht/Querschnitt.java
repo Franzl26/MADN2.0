@@ -25,8 +25,8 @@ public class Querschnitt {
             SpielfeldKonfigurationBytes configBytes = komm.spielfeldKonfigurationHolen(design);
             if (configBytes == null) return datenClient.konfigurationLaden("Standard");
             datenClient.KonfigurationSpeichern(configBytes, design);
+            config = datenClient.konfigurationLaden(design);
         }
-        config = datenClient.konfigurationLaden(design);
         return config != null ? config : datenClient.konfigurationLaden("Standard");
     }
 

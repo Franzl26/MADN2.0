@@ -3,6 +3,7 @@ package edu.unibw.sse.madn.warteraumverwaltung;
 import edu.unibw.sse.madn.serverKomm.Sitzung;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class WarteraumImpl implements Warteraum {
     private static long ID_ZAEHLER = 0;
@@ -11,6 +12,7 @@ public class WarteraumImpl implements Warteraum {
     private final ArrayList<String> namen = new ArrayList<>(4);
     private final ArrayList<Sitzung> clients = new ArrayList<>(4);
     private int botAnzahl = 0;
+    private int spielerAnzahl = 0;
     private String design = "Standard";
 
     @Override
@@ -24,21 +26,19 @@ public class WarteraumImpl implements Warteraum {
     }
 
     int anzahlSpieler() {
-        return namen.size();
+        return spielerAnzahl;
     }
 
-    void spielerHinzufuegen(Sitzung sitzung) {
-        if (sitzung != null) {
-            clients.add(sitzung);
-            namen.add(sitzung.benutzername());
-        }
+    void spielerHinzufuegen(Sitzung sitzung, String benutzername) {
+        clients.add(sitzung);
+        namen.add(benutzername);
+        spielerAnzahl++;
     }
 
-    void spielerEntfernen(Sitzung sitzung) {
-        if (sitzung != null) {
-            clients.remove(sitzung);
-            namen.remove(sitzung.benutzername());
-        }
+    void spielerEntfernen(Sitzung sitzung, String benutzername) {
+        clients.remove(sitzung);
+        namen.remove(benutzername);
+        spielerAnzahl--;
     }
 
     void botHinzufuegen() {

@@ -37,12 +37,13 @@ public class BenutzerZugangImpl implements BenutzerZugang{
         if (!checkPasswordGuidelines(pw1)) return RegistrierenRueckgabe.REG_PASSWORT_NICHT_GUIDELINES;
         if (!pw1.equals(pw2)) return RegistrierenRueckgabe.REG_PASSWORT_NICHT_GLEICH;
         benutzer.nutzerHinzufuegen(benutzername, hashPasswort(pw1.getBytes()));
+        benutzerDaten.benutzerSpeichern(benutzer);
         return RegistrierenRueckgabe.REG_ERFOLGREICH;
     }
 
     @Override
-    public synchronized void abmelden(Sitzung sitzung) {
-        angemeldet.remove(sitzung.benutzername());
+    public synchronized void abmelden(String benutzername) {
+        angemeldet.remove(benutzername);
     }
 
     private static byte[] hashPasswort(byte[] pw) {

@@ -52,6 +52,7 @@ public class AnClientSendenImpl implements AnClientSendenSpiel, AnClientSendenRa
         try {
             sitzung.clientCallback().spielNamenUpdaten(namen);
         } catch (RemoteException e) {
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -62,6 +63,7 @@ public class AnClientSendenImpl implements AnClientSendenSpiel, AnClientSendenRa
         try {
             sitzung.clientCallback().aktuellenSpielerSetzen(spieler);
         } catch (RemoteException e) {
+            e.printStackTrace();
             return false;
         }
         return true;

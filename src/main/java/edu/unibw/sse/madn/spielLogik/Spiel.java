@@ -3,7 +3,9 @@ package edu.unibw.sse.madn.spielLogik;
 import edu.unibw.sse.madn.serverKomm.AnClientSendenSpiel;
 import edu.unibw.sse.madn.serverKomm.Sitzung;
 
-public interface Spiel {
+import java.io.Serializable;
+
+public interface Spiel extends Serializable {
     /**
      * setzt Kanal mit dem der Server Nachrichten an den Client senden kann
      * @param spiel AnClientSendenSpiel

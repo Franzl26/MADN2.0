@@ -41,7 +41,7 @@ public class DialogSpiel extends AnchorPane implements SpielUpdaten {
 
     public DialogSpiel(ClientKomm komm, String design) {
         this.komm = komm;
-        komm.spielUpdaterSetzen(this);
+
         Arrays.fill(brettStatus, FeldBesetztStatus.FELD_LEER);
 
         config = Querschnitt.spielfeldKonfigurationLaden(komm, design);
@@ -61,7 +61,7 @@ public class DialogSpiel extends AnchorPane implements SpielUpdaten {
                 }
                 case WUERFELN_VERBINDUNG_ABGEBROCHEN -> {
                     Meldungen.kommunikationAbgebrochen();
-                    System.exit(0);
+                    System.exit(-1);
                 }
             }
         });
@@ -82,6 +82,8 @@ public class DialogSpiel extends AnchorPane implements SpielUpdaten {
         Button spielVerlassenButton = new Button("Spiel verlassen");
         spielVerlassenButton.addEventHandler(ActionEvent.ACTION, e -> spielVerlassen());
 
+        komm.spielUpdaterSetzen(this);
+
         AnchorPane.setLeftAnchor(nameCanvas, 10.0);
         AnchorPane.setTopAnchor(nameCanvas, 10.0);
         AnchorPane.setLeftAnchor(diceCanvas, 10.0);
@@ -96,6 +98,8 @@ public class DialogSpiel extends AnchorPane implements SpielUpdaten {
         AnchorPane.setBottomAnchor(spielVerlassenButton, 10.0);
 
         getChildren().addAll(nameCanvas, boardCanvas, diceCanvas, gifCanvas, gifView, spielVerlassenButton);
+        drawDice(0);
+        drawBoard(brettStatus);
     }
 
     public void drawDice(int number) {
@@ -141,7 +145,7 @@ public class DialogSpiel extends AnchorPane implements SpielUpdaten {
             SpielStatistik statistik = komm.spielVerlassen();
             if (statistik == null) {
                 Meldungen.kommunikationAbgebrochen();
-                System.exit(0);
+                System.exit(-1);
             }
             DialogSpielstatistik.dialogSpielstatistikStart(komm, statistik);
             ((Stage) getScene().getWindow()).close();
@@ -239,6 +243,7 @@ public class DialogSpiel extends AnchorPane implements SpielUpdaten {
                             highlightedField = -1;
                             drawBoardSingleField(brettStatus[i], i, false);
                         } else {
+                            drawBoardSingleField(brettStatus[highlightedField],highlightedField,false);
                             ZiehenRueckgabe ret = komm.figurZiehen(highlightedField, i);
                             switch (ret) { // todo texte
                                 case ZIEHEN_BESTRAFT ->
@@ -253,7 +258,7 @@ public class DialogSpiel extends AnchorPane implements SpielUpdaten {
                                         Meldungen.zeigeInformation("Nicht gewürfelt", "Du hast noch nicht gewürfelt");
                                 case ZIEHEN_VERBINDUNG_ABGEBROCHEN -> {
                                     Meldungen.kommunikationAbgebrochen();
-                                    System.exit(0);
+                                    System.exit(-1);
                                 }
                             }
                             highlighted = false;

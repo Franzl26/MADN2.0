@@ -44,10 +44,10 @@ public class DialogDesignauswahl extends AnchorPane {
             last = true;
             SpielfeldKonfiguration config = Querschnitt.spielfeldKonfigurationLaden(komm, boardChoice.getValue());
             FeldBesetztStatus[] state = new FeldBesetztStatus[72];
-            Arrays.fill(state,0,3,FeldBesetztStatus.FELD_SPIELER1);
-            Arrays.fill(state,4,7,FeldBesetztStatus.FELD_SPIELER2);
-            Arrays.fill(state,8,11,FeldBesetztStatus.FELD_SPIELER3);
-            Arrays.fill(state,12,15,FeldBesetztStatus.FELD_SPIELER4);
+            Arrays.fill(state,0,4,FeldBesetztStatus.FELD_SPIELER1);
+            Arrays.fill(state,4,8,FeldBesetztStatus.FELD_SPIELER2);
+            Arrays.fill(state,8,12,FeldBesetztStatus.FELD_SPIELER3);
+            Arrays.fill(state,12,16,FeldBesetztStatus.FELD_SPIELER4);
             Arrays.fill(state,16,72,FeldBesetztStatus.FELD_LEER);
             Querschnitt.drawBoardAll(gcBoard, config, state);
             gcDice.setFill(Color.LIGHTSLATEGRAY);

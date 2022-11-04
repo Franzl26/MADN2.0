@@ -2,7 +2,9 @@ package edu.unibw.sse.madn.benutzerVerwaltung;
 
 import edu.unibw.sse.madn.serverKomm.Sitzung;
 
-public interface BenutzerZugang {
+import java.io.Serializable;
+
+public interface BenutzerZugang extends Serializable {
     /**
      * Benutzer anmelden
      * @param benutzername Benutzername
@@ -21,7 +23,7 @@ public interface BenutzerZugang {
 
     /**
      * meldet Client ab
-     * @param sitzung Sitzung
+     * @param benutzername Benutzername aus Sitzung
      */
-    void abmelden(Sitzung sitzung);
+    void abmelden(String benutzername);
 }

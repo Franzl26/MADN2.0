@@ -1,6 +1,8 @@
 package edu.unibw.sse.madn.warteraumverwaltung;
 
-public interface Warteraum {
+import java.io.Serializable;
+
+public interface Warteraum extends Serializable {
     /**
      * @return id des Warteraums
      */

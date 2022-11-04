@@ -1,6 +1,6 @@
 package edu.unibw.sse.madn.spielLogik;
 
-public class SpielStatistikImpl implements SpielStatistik{
+public class SpielStatistikImpl {
     private String[] names;
     private final int[][] zahlenGewuerfelt;
     private final int[] andereGeschlagen;
@@ -9,7 +9,7 @@ public class SpielStatistikImpl implements SpielStatistik{
     private final String[] platzierungen;
     private final long startZeit;
 
-    public SpielStatistikImpl() {
+    SpielStatistikImpl() {
         this.names = new String[4];
         zahlenGewuerfelt = new int[4][6];
         andereGeschlagen = new int[4];
@@ -19,63 +19,35 @@ public class SpielStatistikImpl implements SpielStatistik{
         startZeit = System.currentTimeMillis();
     }
 
-    public void namenSetzen(String[] names) {
+    void namenSetzen(String[] names) {
         this.names = names.clone();
     }
 
-    public void incZahlGewuerfelt(int spieler, int zahl) {
+    void incZahlGewuerfelt(int spieler, int zahl) {
         zahlenGewuerfelt[spieler][zahl]++;
     }
 
-    public void incAndereGeschlagen(int spieler) {
+    void incAndereGeschlagen(int spieler) {
         andereGeschlagen[spieler]++;
     }
 
-    public void incGeschlagenWorden(int spieler) {
+    void incGeschlagenWorden(int spieler) {
         geschlagenWorden[spieler]++;
     }
 
-    public void incPrioZugIgnoriert(int spieler) {
+    void incPrioZugIgnoriert(int spieler) {
         prioZugFalsch[spieler]++;
     }
 
-    public void platzierungSetzen(int platz, String name) {
+    void platzierungSetzen(int platz, String name) {
         platzierungen[platz] = name;
     }
 
-
-    @Override
-    public int[][] zahlenGewuerfelt() {
-        return zahlenGewuerfelt;
+    SpielStatistik holeZumSenden() {
+        return new zumSenden(names.clone(), zahlenGewuerfelt.clone(), andereGeschlagen.clone(), geschlagenWorden.clone(), prioZugFalsch.clone(), platzierungen.clone(), startZeit);
     }
 
-    @Override
-    public int[] andereGeschlagen() {
-        return andereGeschlagen;
-    }
-
-    @Override
-    public int[] geschlagenWorden() {
-        return geschlagenWorden;
-    }
-
-    @Override
-    public int[] prioZugFalsch() {
-        return prioZugFalsch;
-    }
-
-    @Override
-    public String[] platzierung() {
-        return platzierungen;
-    }
-
-    @Override
-    public long startZeit() {
-        return startZeit;
-    }
-
-    @Override
-    public String[] namen() {
-        return new String[0];
+    private record zumSenden(String[] namen, int[][] zahlenGewuerfelt, int[] andereGeschlagen, int[] geschlagenWorden,
+                             int[] prioZugFalsch, String[] platzierungen, long startZeit) implements SpielStatistik {
     }
 }

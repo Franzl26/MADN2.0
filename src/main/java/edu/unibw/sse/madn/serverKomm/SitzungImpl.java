@@ -11,8 +11,9 @@ import edu.unibw.sse.madn.spielLogik.ZiehenRueckgabe;
 import edu.unibw.sse.madn.warteraumverwaltung.Raumauswahl;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
-public class SitzungImpl implements Sitzung{
+public class SitzungImpl extends UnicastRemoteObject implements Sitzung {
     private final ClientCallback clientCallback;
     private final String benutzername;
     private final SpielDesign spielDesign;
@@ -20,7 +21,8 @@ public class SitzungImpl implements Sitzung{
     private final Raumauswahl raumauswahl;
     private final Spiel spiel;
 
-    public SitzungImpl(ClientCallback clientCallback, String benutzername, SpielDesign spielDesign, BenutzerZugang benutzerZugang, Raumauswahl raumauswahl, Spiel spiel) {
+    public SitzungImpl(ClientCallback clientCallback, String benutzername, SpielDesign spielDesign, BenutzerZugang benutzerZugang, Raumauswahl raumauswahl, Spiel spiel) throws RemoteException {
+        super();
         this.clientCallback = clientCallback;
         this.benutzername = benutzername;
         this.spielDesign = spielDesign;
@@ -31,7 +33,7 @@ public class SitzungImpl implements Sitzung{
 
     @Override
     public void abmelden() throws RemoteException {
-        benutzerZugang.abmelden(this);
+        benutzerZugang.abmelden(benutzername);
     }
 
     @Override

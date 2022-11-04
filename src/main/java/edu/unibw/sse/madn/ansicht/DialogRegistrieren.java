@@ -42,6 +42,7 @@ public class DialogRegistrieren extends AnchorPane {
                 Meldungen.zeigeInformation("Benutzername entspricht nicht den Richtlinien", "Der Benutzername entspricht nicht den Richtlinien:\n- 3-8 Zeichen\n- nur Buchstaben");
             } else if (ret == REG_ERFOLGREICH) {
                 Meldungen.zeigeInformation("Registrierung erfolgreich!", "Die Registrierung war erfolgreich, du kannst dich jetzt anmelden");
+                DialogAnmelden.dialogAnmeldenStart(komm);
                 ((Stage) getScene().getWindow()).close();
             } else if (ret == REG_NAME_BEREITS_VERGEBEN) {
                 Meldungen.zeigeInformation("Benutzername bereits vergeben", "Dieser Benutzername ist bereits vergeben, versuche es mit einem anderen nochmal");

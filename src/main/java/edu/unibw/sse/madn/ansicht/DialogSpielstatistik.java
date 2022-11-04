@@ -13,9 +13,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.nio.file.Paths;
-
 public class DialogSpielstatistik extends AnchorPane {
     private final GraphicsContext gc;
     private final ClientKomm komm;
@@ -49,7 +46,7 @@ public class DialogSpielstatistik extends AnchorPane {
         gc.setFill(Color.BLACK);
         gc.setLineWidth(1.0);
         gc.setFont(Font.font(40));
-        String[] s = stats.platzierung();
+        String[] s = stats.platzierungen();
         for (int i = 0; i < anzahl; i++) {
             gc.fillText("Platz " + (i + 1) + ": " + (s[i] != null ? s[i] : ""), 5, i * 40 + 30);
         }
