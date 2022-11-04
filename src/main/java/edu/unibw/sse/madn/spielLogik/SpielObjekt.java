@@ -14,9 +14,9 @@ import static java.lang.Thread.sleep;
 public class SpielObjekt {
     private static final int BOT_WAIT_WUERFELN = 1000;
     private static final int BOT_WAIT_ZIEHEN = 2000;
-    private static final int DELAY_WUERFELN = 1000000;
-    private static final int DELAY_SPIELZUG = 3000000;
-    private static final int DELAY_WAITING = 500000;
+    private static final int DELAY_WUERFELN = 10000;
+    private static final int DELAY_SPIELZUG = 15000;
+    private static final int DELAY_WAITING = 5000;
 
     private final SpielStatistikImpl spielStatistik;
     private final AnClientSendenSpiel anClient;
@@ -162,23 +162,19 @@ public class SpielObjekt {
         int[] ret = new int[]{-1, -1};
         // bestrafen
         // abrücken
-        if (from != 32 && aktuellerSpieler == FELD_SPIELER1 && boardState[32] == FELD_SPIELER1 && boardState[32 + zahlGewuerfelt] != FELD_SPIELER1
-                && (boardState[0] == FELD_SPIELER1 || boardState[1] == FELD_SPIELER1 || boardState[2] == FELD_SPIELER1 || boardState[3] == FELD_SPIELER1)) {
+        if (from != 32 && aktuellerSpieler == FELD_SPIELER1 && boardState[32] == FELD_SPIELER1 && boardState[32 + zahlGewuerfelt] != FELD_SPIELER1 && (boardState[0] == FELD_SPIELER1 || boardState[1] == FELD_SPIELER1 || boardState[2] == FELD_SPIELER1 || boardState[3] == FELD_SPIELER1)) {
             ret[0] = figurZurueckAufStartpositionen(32);
             ret[1] = 32;
         }
-        if (from != 42 && aktuellerSpieler == FELD_SPIELER2 && boardState[42] == FELD_SPIELER2 && boardState[42 + zahlGewuerfelt] != FELD_SPIELER2
-                && (boardState[4] == FELD_SPIELER2 || boardState[5] == FELD_SPIELER2 || boardState[6] == FELD_SPIELER2 || boardState[7] == FELD_SPIELER2)) {
+        if (from != 42 && aktuellerSpieler == FELD_SPIELER2 && boardState[42] == FELD_SPIELER2 && boardState[42 + zahlGewuerfelt] != FELD_SPIELER2 && (boardState[4] == FELD_SPIELER2 || boardState[5] == FELD_SPIELER2 || boardState[6] == FELD_SPIELER2 || boardState[7] == FELD_SPIELER2)) {
             ret[0] = figurZurueckAufStartpositionen(42);
             ret[1] = 42;
         }
-        if (from != 52 && aktuellerSpieler == FELD_SPIELER3 && boardState[52] == FELD_SPIELER3 && boardState[52 + zahlGewuerfelt] != FELD_SPIELER3
-                && (boardState[8] == FELD_SPIELER3 || boardState[9] == FELD_SPIELER3 || boardState[10] == FELD_SPIELER3 || boardState[11] == FELD_SPIELER3)) {
+        if (from != 52 && aktuellerSpieler == FELD_SPIELER3 && boardState[52] == FELD_SPIELER3 && boardState[52 + zahlGewuerfelt] != FELD_SPIELER3 && (boardState[8] == FELD_SPIELER3 || boardState[9] == FELD_SPIELER3 || boardState[10] == FELD_SPIELER3 || boardState[11] == FELD_SPIELER3)) {
             ret[0] = figurZurueckAufStartpositionen(52);
             ret[1] = 52;
         }
-        if (from != 62 && aktuellerSpieler == FELD_SPIELER4 && boardState[62] == FELD_SPIELER4 && boardState[62 + zahlGewuerfelt] != FELD_SPIELER4
-                && (boardState[12] == FELD_SPIELER4 || boardState[13] == FELD_SPIELER4 || boardState[14] == FELD_SPIELER4 || boardState[15] == FELD_SPIELER4)) {
+        if (from != 62 && aktuellerSpieler == FELD_SPIELER4 && boardState[62] == FELD_SPIELER4 && boardState[62 + zahlGewuerfelt] != FELD_SPIELER4 && (boardState[12] == FELD_SPIELER4 || boardState[13] == FELD_SPIELER4 || boardState[14] == FELD_SPIELER4 || boardState[15] == FELD_SPIELER4)) {
             ret[0] = figurZurueckAufStartpositionen(62);
             ret[1] = 62;
         }
@@ -209,7 +205,8 @@ public class SpielObjekt {
     private synchronized WuerfelnRueckgabe throwDiceIntern() {
         timerWuerfeln.cancel();
         if (zahlGewuerfelt > 0) {
-            if (getValidMove(boardState, felderVonSpieler[aktiverSpieler], zahlGewuerfelt)[0] != -1) return WuerfelnRueckgabe.WUERFELN_FALSCHE_PHASE;
+            if (getValidMove(boardState, felderVonSpieler[aktiverSpieler], zahlGewuerfelt)[0] != -1)
+                return WuerfelnRueckgabe.WUERFELN_FALSCHE_PHASE;
         }
         if (anzahlWuerfeln == 0) return WuerfelnRueckgabe.WUERFELN_NICHT_DRAN;
 
@@ -417,7 +414,7 @@ public class SpielObjekt {
 
     private void displayNewStateIntern(Sitzung sitzung, FeldBesetztStatus[] state, int[] changed) {
         new Thread(() -> {
-            boolean ret = anClient.spielfeldUpdaten(sitzung,state,changed);
+            boolean ret = anClient.spielfeldUpdaten(sitzung, state, changed);
             if (!ret) removePlayerIntern(sitzung);
         }).start();
     }

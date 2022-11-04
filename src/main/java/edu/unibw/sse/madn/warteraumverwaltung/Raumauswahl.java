@@ -16,7 +16,7 @@ public interface Raumauswahl extends Serializable {
     /**
      * meldet Client für die aktualisierung der Warteräume an
      *
-     * @param sitzung      Sitzung
+     * @param sitzung Sitzung
      */
     void fuerUpdatesAnmelden(Sitzung sitzung);
 

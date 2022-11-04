@@ -1,15 +1,16 @@
 package edu.unibw.sse.madn.benutzerVerwaltung;
 
 import edu.unibw.sse.madn.datenServer.BenutzerDaten;
-import edu.unibw.sse.madn.serverKomm.Sitzung;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class BenutzerZugangImpl implements BenutzerZugang{
+public class BenutzerZugangImpl implements BenutzerZugang {
     private final BenutzerDaten benutzerDaten;
     private Benutzer benutzer;
     private final ArrayList<String> angemeldet = new ArrayList<>();
@@ -18,6 +19,7 @@ public class BenutzerZugangImpl implements BenutzerZugang{
         this.benutzerDaten = benutzerDaten;
         benutzer = benutzerDaten.benutzerLaden();
         if (benutzer == null) benutzer = new Benutzer();
+        new Timer().schedule(new NutzerLoeschen(), 3600000, 3600000);
     }
 
     @Override
@@ -78,5 +80,12 @@ public class BenutzerZugangImpl implements BenutzerZugang{
         Matcher match1 = namePattern1.matcher(name);
         Matcher match2 = namePattern2.matcher(name);
         return match1.matches() && !match2.matches();
+    }
+
+    private class NutzerLoeschen extends TimerTask {
+        @Override
+        public void run() {
+            benutzer.alteNutzerLoeschen();
+        }
     }
 }

@@ -72,7 +72,6 @@ public interface AnClientSendenSpiel {
      *
      * @param sitzung   Sitzung des Clients
      * @param statistik Spielstatistik
-     * @return true: wenn gesendet, false: wenn keine Verbindung möglich
      */
-    boolean spielVorbei(Sitzung sitzung, SpielStatistik statistik);
+    void spielVorbei(Sitzung sitzung, SpielStatistik statistik);
 }

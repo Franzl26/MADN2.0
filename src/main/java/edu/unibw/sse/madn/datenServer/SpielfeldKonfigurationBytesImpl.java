@@ -56,16 +56,20 @@ public class SpielfeldKonfigurationBytesImpl implements SpielfeldKonfigurationBy
         }
 
         private boolean read(File f) {
-            // Bilder einlesen
-            board = readFile(f.getAbsolutePath() + "/board.png");
-            pathNormal = readFile(f.getAbsolutePath() + "/pathNormal.png");
-            dice = readFiles(f.getAbsolutePath(), "/dice", 7);
-            path = readFiles(f.getAbsolutePath(), "/path", 4);
-            personal = readFiles(f.getAbsolutePath(), "/personal", 4);
-            figure = readFiles(f.getAbsolutePath(), "/figure", 4);
-            figureHigh = readFiles(f.getAbsolutePath(), "/figureHigh", 4);
-            // position.txt einlesen
-            position = readFile(f.getAbsolutePath() + "/positions.txt");
+            try {
+                // Bilder einlesen
+                board = readFile(f.getAbsolutePath() + "/board.png");
+                pathNormal = readFile(f.getAbsolutePath() + "/pathNormal.png");
+                dice = readFiles(f.getAbsolutePath(), "/dice", 7);
+                path = readFiles(f.getAbsolutePath(), "/path", 4);
+                personal = readFiles(f.getAbsolutePath(), "/personal", 4);
+                figure = readFiles(f.getAbsolutePath(), "/figure", 4);
+                figureHigh = readFiles(f.getAbsolutePath(), "/figureHigh", 4);
+                // position.txt einlesen
+                position = readFile(f.getAbsolutePath() + "/positions.txt");
+            } catch (Exception e) {
+                return false;
+            }
             return true;
         }
 

@@ -7,6 +7,8 @@ import edu.unibw.sse.madn.spielLogik.SpielErstellen;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class RaumauswahlImpl implements Raumauswahl, WarteraumCallback {
     private final static int MAX_RAEUME = 25;
@@ -53,12 +55,18 @@ public class RaumauswahlImpl implements Raumauswahl, WarteraumCallback {
     public synchronized boolean warteraumBeitreten(Sitzung sitzung, long raumId) {
         WarteraumImpl raum = idZuRaum.get(raumId);
         if (raum == null) return false;
-        if (raum.anzahlSpieler() >= 4) return false;
+        if (raum.anzahlSpieler() + raum.botAnzahl() >= 4) return false;
         raum.spielerHinzufuegen(sitzung, namenHolen(sitzung));
         istInRaum.put(sitzung, raum.id());
         clientEntfernen(sitzung);
         updateClients();
         updateRaum(raum);
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                updateRaum(raum);
+            }
+        }, 500);
         return true;
     }
 

@@ -110,12 +110,10 @@ public class AnClientSendenImpl implements AnClientSendenSpiel, AnClientSendenRa
     }
 
     @Override
-    public boolean spielVorbei(Sitzung sitzung, SpielStatistik statistik) {
+    public void spielVorbei(Sitzung sitzung, SpielStatistik statistik) {
         try {
             sitzung.clientCallback().spielVorbei(statistik);
-        } catch (RemoteException e) {
-            return false;
+        } catch (RemoteException ignored) {
         }
-        return true;
     }
 }

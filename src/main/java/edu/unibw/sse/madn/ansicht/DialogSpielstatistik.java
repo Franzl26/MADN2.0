@@ -69,7 +69,7 @@ public class DialogSpielstatistik extends AnchorPane {
                 //noinspection IntegerDivisionInFloatingPointContext
                 double percent = ((wuerfe[i][j - 1] * 10000 / gesamt) / 100.0);
                 gc.fillText(j + ": " + (wuerfe[i][j - 1] < 100 ? "  " : "") + wuerfe[i][j - 1] + " = " + percent, baseX, baseY + j * 20 + 10);
-                gc.drawImage(image, baseX + 135, baseY + j * 20 - 7, 200.0 * wuerfe[i][j-1] / maxWurf, 18);
+                gc.drawImage(image, baseX + 135, baseY + j * 20 - 7, 200.0 * wuerfe[i][j - 1] / maxWurf, 18);
             }
         }
 

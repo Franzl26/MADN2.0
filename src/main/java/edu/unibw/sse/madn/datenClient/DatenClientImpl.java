@@ -30,7 +30,7 @@ public class DatenClientImpl implements DatenClient {
 
     @Override
     public void KonfigurationSpeichern(SpielfeldKonfigurationBytes konfiguration, String name) {
-        File f = new File("./resources/client/designs/"+name+"/");
+        File f = new File("./resources/client/designs/" + name + "/");
         //noinspection ResultOfMethodCallIgnored
         f.mkdir();
         konfiguration.konfigurationSpeichern(f.getAbsolutePath());

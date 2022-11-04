@@ -15,23 +15,6 @@ public class WarteraeumeImpl implements Warteraeume {
         return raeume;
     }
 
-    private static class WarteraumSimple implements Warteraum {
-        private final String[] namen;
-        private final long id;
-
-        public WarteraumSimple(String[] namen, long id) {
-            this.namen = namen;
-            this.id = id;
-        }
-
-        @Override
-        public long id() {
-            return id;
-        }
-
-        @Override
-        public String[] namen() {
-            return namen;
-        }
+    private record WarteraumSimple(String[] namen, long id) implements Warteraum {
     }
 }

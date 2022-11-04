@@ -4,8 +4,9 @@ import edu.unibw.sse.madn.benutzerVerwaltung.Benutzer;
 
 import java.io.*;
 
-public class BenutzerDatenImpl implements BenutzerDaten{
+public class BenutzerDatenImpl implements BenutzerDaten {
     private final static String datei = "./resources/server/benutzer";
+
     @Override
     public void benutzerSpeichern(Benutzer benutzer) {
         try (ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(datei))) {

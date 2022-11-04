@@ -7,12 +7,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.rmi.RemoteException;
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SpielfeldKonfigurationImpl implements SpielfeldKonfiguration{
+public class SpielfeldKonfigurationImpl implements SpielfeldKonfiguration {
     @Override
     public int[] koordinatenVonFeld(int i) {
         return pointCoordinates[i];
@@ -130,7 +128,7 @@ public class SpielfeldKonfigurationImpl implements SpielfeldKonfiguration{
                 figure = readImages(f.getAbsolutePath(), "/figure", 4);
                 figureHigh = readImages(f.getAbsolutePath(), "/figureHigh", 4);
             } catch (NullPointerException | IllegalArgumentException e) {
-                e.printStackTrace(System.out);
+                //e.printStackTrace(System.out);
                 return false;
             }
 
@@ -161,7 +159,7 @@ public class SpielfeldKonfigurationImpl implements SpielfeldKonfiguration{
                 }
 
             } catch (IOException e) {
-                e.printStackTrace(System.out);
+                //e.printStackTrace(System.out);
                 return false;
             }
 

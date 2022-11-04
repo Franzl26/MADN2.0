@@ -101,17 +101,13 @@ public class SpielMethoden {
                 if (board[i] != FELD_LEER && board[62] != FELD_SPIELER4) return new int[]{i, 62};
         }
         // abrücken
-        if (player == FELD_SPIELER1 && board[32] == FELD_SPIELER1 && board[32 + dice] != FELD_SPIELER1
-                && (board[0] == FELD_SPIELER1 || board[1] == FELD_SPIELER1 || board[2] == FELD_SPIELER1 || board[3] == FELD_SPIELER1))
+        if (player == FELD_SPIELER1 && board[32] == FELD_SPIELER1 && board[32 + dice] != FELD_SPIELER1 && (board[0] == FELD_SPIELER1 || board[1] == FELD_SPIELER1 || board[2] == FELD_SPIELER1 || board[3] == FELD_SPIELER1))
             return new int[]{32, 32 + dice};
-        if (player == FELD_SPIELER2 && board[42] == FELD_SPIELER2 && board[42 + dice] != FELD_SPIELER2
-                && (board[4] == FELD_SPIELER2 || board[5] == FELD_SPIELER2 || board[6] == FELD_SPIELER2 || board[7] == FELD_SPIELER2))
+        if (player == FELD_SPIELER2 && board[42] == FELD_SPIELER2 && board[42 + dice] != FELD_SPIELER2 && (board[4] == FELD_SPIELER2 || board[5] == FELD_SPIELER2 || board[6] == FELD_SPIELER2 || board[7] == FELD_SPIELER2))
             return new int[]{42, 42 + dice};
-        if (player == FELD_SPIELER3 && board[52] == FELD_SPIELER3 && board[52 + dice] != FELD_SPIELER3
-                && (board[8] == FELD_SPIELER3 || board[9] == FELD_SPIELER3 || board[10] == FELD_SPIELER3 || board[11] == FELD_SPIELER3))
+        if (player == FELD_SPIELER3 && board[52] == FELD_SPIELER3 && board[52 + dice] != FELD_SPIELER3 && (board[8] == FELD_SPIELER3 || board[9] == FELD_SPIELER3 || board[10] == FELD_SPIELER3 || board[11] == FELD_SPIELER3))
             return new int[]{52, 52 + dice};
-        if (player == FELD_SPIELER4 && board[62] == FELD_SPIELER4 && board[62 + dice] != FELD_SPIELER4
-                && (board[12] == FELD_SPIELER4 || board[13] == FELD_SPIELER4 || board[14] == FELD_SPIELER4 || board[15] == FELD_SPIELER4))
+        if (player == FELD_SPIELER4 && board[62] == FELD_SPIELER4 && board[62 + dice] != FELD_SPIELER4 && (board[12] == FELD_SPIELER4 || board[13] == FELD_SPIELER4 || board[14] == FELD_SPIELER4 || board[15] == FELD_SPIELER4))
             return new int[]{62, 62 + dice};
         // schlagen
         for (int i = 39; i >= 0; i--) {

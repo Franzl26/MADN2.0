@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 public class DialogWarteraum extends AnchorPane implements WarteraumUpdaten {
     private final GraphicsContext gcName;
     private final ClientKomm komm;
+
     public DialogWarteraum(ClientKomm komm) {
         this.komm = komm;
 
@@ -27,8 +28,10 @@ public class DialogWarteraum extends AnchorPane implements WarteraumUpdaten {
         botAddButton.addEventHandler(ActionEvent.ACTION, e -> {
             AllgemeinerReturnWert ret = komm.botHinzufuegen();
             switch (ret) {
-                case RET_ERFOLGREICH -> {}
-                case RET_FEHLER -> Meldungen.zeigeInformation("Warteraum voll", "Der Warteraum ist bereits voll, du kannst keinen Bot hinzufügen.");
+                case RET_ERFOLGREICH -> {
+                }
+                case RET_FEHLER ->
+                        Meldungen.zeigeInformation("Warteraum voll", "Der Warteraum ist bereits voll, du kannst keinen Bot hinzufügen.");
                 case RET_VERBINDUNG_ABGEBROCHEN -> {
                     Meldungen.kommunikationAbgebrochen();
                     System.exit(-1);
@@ -40,8 +43,10 @@ public class DialogWarteraum extends AnchorPane implements WarteraumUpdaten {
         botRemoveButton.addEventHandler(ActionEvent.ACTION, e -> {
             AllgemeinerReturnWert ret = komm.botEntfernen();
             switch (ret) {
-                case RET_ERFOLGREICH -> {}
-                case RET_FEHLER -> Meldungen.zeigeInformation("Kein Bot im Warteraum", "Es befindet sich kein Bot im Warteraum, der entfernt werden kann.");
+                case RET_ERFOLGREICH -> {
+                }
+                case RET_FEHLER ->
+                        Meldungen.zeigeInformation("Kein Bot im Warteraum", "Es befindet sich kein Bot im Warteraum, der entfernt werden kann.");
                 case RET_VERBINDUNG_ABGEBROCHEN -> {
                     Meldungen.kommunikationAbgebrochen();
                     System.exit(-1);
@@ -63,8 +68,10 @@ public class DialogWarteraum extends AnchorPane implements WarteraumUpdaten {
         startButton.addEventHandler(ActionEvent.ACTION, e -> {
             AllgemeinerReturnWert ret = komm.spielStarten();
             switch (ret) {
-                case RET_ERFOLGREICH -> {}
-                case RET_FEHLER -> Meldungen.zeigeInformation("Nicht genug Spieler im Warteraum", "Es sind weniger als 2 Spieler im Warteraum, dass Spiel kann nicht gestartet werden.");
+                case RET_ERFOLGREICH -> {
+                }
+                case RET_FEHLER ->
+                        Meldungen.zeigeInformation("Nicht genug Spieler im Warteraum", "Es sind weniger als 2 Spieler im Warteraum, dass Spiel kann nicht gestartet werden.");
                 case RET_VERBINDUNG_ABGEBROCHEN -> {
                     Meldungen.kommunikationAbgebrochen();
                     System.exit(-1);

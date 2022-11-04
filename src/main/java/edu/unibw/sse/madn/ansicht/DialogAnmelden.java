@@ -10,7 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-public class DialogAnmelden extends AnchorPane{
+public class DialogAnmelden extends AnchorPane {
     public DialogAnmelden(ClientKomm komm) {
         TextField serverTextField = new TextField("localhost");
         serverTextField.setPromptText("Server-IP-Adresse");
@@ -41,7 +41,8 @@ public class DialogAnmelden extends AnchorPane{
                     ((Stage) getScene().getWindow()).close();
                 }
                 case RET_FEHLER -> Meldungen.zeigeInformation("Login-Daten fehlerhaft", "Die Logindaten sind falsch.");
-                case RET_VERBINDUNG_ABGEBROCHEN -> Meldungen.zeigeInformation("Server nicht gefunden", "Unter der angegebenen IP-Adresse konnte kein Server gefunden werden.");
+                case RET_VERBINDUNG_ABGEBROCHEN ->
+                        Meldungen.zeigeInformation("Server nicht gefunden", "Unter der angegebenen IP-Adresse konnte kein Server gefunden werden.");
             }
         });
 
@@ -61,7 +62,7 @@ public class DialogAnmelden extends AnchorPane{
         getChildren().addAll(abbrechenButton, serverTextField, usernameTextField, passwordField, registrierenButton, anmeldenButton);
     }
 
-    public static void dialogAnmeldenStart(ClientKomm  komm) {
+    public static void dialogAnmeldenStart(ClientKomm komm) {
         DialogAnmelden root = new DialogAnmelden(komm);
         Scene scene = new Scene(root, 300, 150);
         Stage stage = new Stage();

@@ -28,7 +28,7 @@ public class ServerStart {
             RaumauswahlImpl raumauswahl = new RaumauswahlImpl();
             SpielImpl spiel = new SpielImpl();
             raumauswahl.spielErstellenSetzen(spiel);
-            ServerVerbindung serverVerbindung = new ServerVerbindungImpl(spielDesign,benutzerZugang,raumauswahl,spiel);
+            ServerVerbindung serverVerbindung = new ServerVerbindungImpl(spielDesign, benutzerZugang, raumauswahl, spiel);
             AnClientSendenImpl anClientSenden = new AnClientSendenImpl();
             raumauswahl.kommunikationskanalSetzen(anClientSenden);
             spiel.kommunikationskanalSetzen(anClientSenden);

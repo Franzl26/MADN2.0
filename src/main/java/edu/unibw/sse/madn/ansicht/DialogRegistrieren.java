@@ -35,7 +35,7 @@ public class DialogRegistrieren extends AnchorPane {
         registrierenButton.addEventHandler(ActionEvent.ACTION, e -> {
             RegistrierenRueckgabe ret = komm.registrieren(serverTextField.getText(), usernameTextField.getText(), passwordField.getText(), passwordField2.getText());
             if (ret == REG_PASSWORT_NICHT_GLEICH) {
-                Meldungen.zeigeInformation("Passwörter stimmen nicht überein","Die beiden eingegebenen Passwörter stimmen nicht überein.");
+                Meldungen.zeigeInformation("Passwörter stimmen nicht überein", "Die beiden eingegebenen Passwörter stimmen nicht überein.");
             } else if (ret == REG_PASSWORT_NICHT_GUIDELINES) {
                 Meldungen.zeigeInformation("Passwort entspricht nicht den Richtlinien", "Das Passwort entspricht nicht den Richtlinien:\n- 8-15 Zeichen\n- mindestens ein Buchstabe\n- mindestens eine Zahl\n- mindestens eins der Sonderzeichen: !§$%&/()=?#");
             } else if (ret == REG_NAME_NICHT_GUIDELINES) {

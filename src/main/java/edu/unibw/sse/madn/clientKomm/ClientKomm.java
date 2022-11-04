@@ -16,22 +16,25 @@ public interface ClientKomm {
     String benutzernamenHolen();
 
     // Anmelden / Registrieren / Abmelden
+
     /**
      * Benutzer anmelden
-     * @param ip Server IP
+     *
+     * @param ip           Server IP
      * @param benutzername Benutzername
-     * @param passwort Passwort verschlüsselt
+     * @param passwort     Passwort verschlüsselt
      * @return erfolgreich: true, sonst false
      */
     AllgemeinerReturnWert anmelden(String ip, String benutzername, String passwort);
 
     /**
      * Benutzer registrieren
-     * @param ip Server IP
+     *
+     * @param ip           Server IP
      * @param benutzername Benutzername
-     * @param pw1 Passwort verschlüsselt
-     * @param pw2 wiederholtes Passwort verschlüsselt
-     * @return Fehler oder Erfolg
+     * @param pw1          Passwort verschlüsselt
+     * @param pw2          wiederholtes Passwort verschlüsselt
+     * @return entsprechend des Anwendungsfalls
      */
     RegistrierenRueckgabe registrieren(String ip, String benutzername, String pw1, String pw2);
 
@@ -42,6 +45,7 @@ public interface ClientKomm {
 
 
     // Designs
+
     /**
      * @return List aller verfügbaren Designs/Spielfeld-Konfigurationen oder null bei Fehler
      */
@@ -65,12 +69,14 @@ public interface ClientKomm {
 
     /**
      * Warteraum erstellen
+     *
      * @return Warteraum erstellt: RET_ERFOLGREICH, Verbindungsfehler RET_VERBINDUNG_ABGEBROCHEN, sonst RET_FEHLER
      */
     AllgemeinerReturnWert warteraumErstellen();
 
     /**
      * Warteraum beitreten
+     *
      * @param raumId Raum-ID
      * @return Warteraum beigetreten: RET_ERFOLGREICH, Verbindungsfehler RET_VERBINDUNG_ABGEBROCHEN, sonst RET_FEHLER
      */
@@ -83,33 +89,39 @@ public interface ClientKomm {
 
     /**
      * Bot hinzufügen
+     *
      * @return Bot hinzugefügt: RET_ERFOLGREICH, Verbindungsfehler RET_VERBINDUNG_ABGEBROCHEN, sonst RET_FEHLER
      */
     AllgemeinerReturnWert botHinzufuegen();
 
     /**
      * Bot Entfernen
+     *
      * @return Bot entfernt: RET_ERFOLGREICH, Verbindungsfehler RET_VERBINDUNG_ABGEBROCHEN, sonst RET_FEHLER
      */
     AllgemeinerReturnWert botEntfernen();
 
     /**
      * Spiel starten
+     *
      * @return Spiel gestartet: RET_ERFOLGREICH, Verbindungsfehler RET_VERBINDUNG_ABGEBROCHEN, sonst RET_FEHLER
      */
     AllgemeinerReturnWert spielStarten();
 
     /**
      * Spieldesign ändern
+     *
      * @param design Design
      */
     void designAnpassen(String design);
 
 
     // Spiel
+
     /**
      * Spielzug einreichen
-     * @param von Feld von
+     *
+     * @param von  Feld von
      * @param nach Feld nach
      */
     ZiehenRueckgabe figurZiehen(int von, int nach);
@@ -121,24 +133,28 @@ public interface ClientKomm {
 
     /**
      * Spiel Verlassen
+     *
      * @return Spielstatistik oder null bei Fehler
      */
     SpielStatistik spielVerlassen();
 
     /**
      * Setzt für ClientCallback den Callback in den Dialog Raumauswahl
+     *
      * @param update UpdateInterface
      */
     void raumauswahlUpdaterSetzen(RaumauswahlUpdaten update);
 
     /**
      * Setzt für ClientCallback den Callback in den Dialog Warteraum
+     *
      * @param update UpdateInterface
      */
     void warteraumUpdaterSetzen(WarteraumUpdaten update);
 
     /**
      * Setzt für ClientCallback den Callback in den Dialog Spiel
+     *
      * @param update UpdateInterface
      */
     void spielUpdaterSetzen(SpielUpdaten update);

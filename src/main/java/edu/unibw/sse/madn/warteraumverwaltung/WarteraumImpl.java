@@ -3,7 +3,6 @@ package edu.unibw.sse.madn.warteraumverwaltung;
 import edu.unibw.sse.madn.serverKomm.Sitzung;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class WarteraumImpl implements Warteraum {
     private static long ID_ZAEHLER = 0;

@@ -26,14 +26,6 @@ public class DialogRaumauswahl extends AnchorPane implements RaumauswahlUpdaten 
     public DialogRaumauswahl(ClientKomm komm) {
         this.komm = komm;
 
-        AllgemeinerReturnWert retAn = komm.fuerWarteraumUpdatesAnmelden();
-        switch (retAn) {
-            case RET_ERFOLGREICH, RET_FEHLER -> {}
-            case RET_VERBINDUNG_ABGEBROCHEN -> {
-                Meldungen.kommunikationAbgebrochen();
-                System.exit(-1);
-            }
-        }
         Canvas nameCanvas = new Canvas(300, 40);
         GraphicsContext gcName = nameCanvas.getGraphicsContext2D();
         gcName.setFont(Font.font(30));
@@ -46,7 +38,8 @@ public class DialogRaumauswahl extends AnchorPane implements RaumauswahlUpdaten 
         newGameButton.addEventHandler(ActionEvent.ACTION, e -> {
             AllgemeinerReturnWert ret = komm.warteraumErstellen();
             switch (ret) {
-                case RET_FEHLER -> Meldungen.zeigeInformation("Maximale Raumanzahl bereits erreicht", "Die maximale Anzahl an Warteräumen ist erreicht, es kann kein neuer erstellt werden.");
+                case RET_FEHLER ->
+                        Meldungen.zeigeInformation("Maximale Raumanzahl bereits erreicht", "Die maximale Anzahl an Warteräumen ist erreicht, es kann kein neuer erstellt werden.");
                 case RET_ERFOLGREICH -> {
                     DialogWarteraum.dialogWarteraumStart(komm);
                     ((Stage) getScene().getWindow()).close();
@@ -71,6 +64,15 @@ public class DialogRaumauswahl extends AnchorPane implements RaumauswahlUpdaten 
 
         getChildren().addAll(nameCanvas, roomsList, newGameButton, exitButton);
         komm.raumauswahlUpdaterSetzen(this);
+        AllgemeinerReturnWert retAn = komm.fuerWarteraumUpdatesAnmelden();
+        switch (retAn) {
+            case RET_ERFOLGREICH, RET_FEHLER -> {
+            }
+            case RET_VERBINDUNG_ABGEBROCHEN -> {
+                Meldungen.kommunikationAbgebrochen();
+                System.exit(-1);
+            }
+        }
     }
 
     public void displayRooms(Warteraeume raume) {
@@ -84,7 +86,8 @@ public class DialogRaumauswahl extends AnchorPane implements RaumauswahlUpdaten 
             button.addEventHandler(ActionEvent.ACTION, e -> {
                 AllgemeinerReturnWert ret = komm.warteraumBeitreten(r.id());
                 switch (ret) {
-                    case RET_FEHLER -> Meldungen.zeigeInformation("Warteraum ist voll", "Der Warteraum ist bereits voll, du kannst diesem leider nicht beitreten");
+                    case RET_FEHLER ->
+                            Meldungen.zeigeInformation("Warteraum ist voll", "Der Warteraum ist bereits voll, du kannst diesem leider nicht beitreten");
                     case RET_ERFOLGREICH -> {
                         DialogWarteraum.dialogWarteraumStart(komm);
                         ((Stage) getScene().getWindow()).close();
@@ -121,7 +124,7 @@ public class DialogRaumauswahl extends AnchorPane implements RaumauswahlUpdaten 
     }
 
     private void beenden(ClientKomm komm) {
-        if (Meldungen.frageBestaetigung("Spiel beenden","Willst du das Spiel wirklich beenden?")) {
+        if (Meldungen.frageBestaetigung("Spiel beenden", "Willst du das Spiel wirklich beenden?")) {
             komm.abmelden();
             System.exit(0);
         }

@@ -55,8 +55,9 @@ public class DialogSpiel extends AnchorPane implements SpielUpdaten {
         diceCanvas.setOnMouseClicked(e -> {
             WuerfelnRueckgabe ret = komm.wuerfeln();
             switch (ret) { // todo texte
-                case WUERFELN_NICHT_DRAN -> Meldungen.zeigeInformation("", "");
-                case WUERFELN_FALSCHE_PHASE -> Meldungen.zeigeInformation("", "");
+                case WUERFELN_NICHT_DRAN -> Meldungen.zeigeInformation("Nicht dran", "Du bist nicht dran mit würfeln.");
+                case WUERFELN_FALSCHE_PHASE ->
+                        Meldungen.zeigeInformation("Schon gewürfelt", "Du hast schon gewürfelt, jetzt ist ziehen dran.");
                 case WUERFELN_ERFOLGREICH, WUERFELN_KEIN_ZUG_MOEGLICH -> {
                 }
                 case WUERFELN_VERBINDUNG_ABGEBROCHEN -> {
@@ -243,7 +244,7 @@ public class DialogSpiel extends AnchorPane implements SpielUpdaten {
                             highlightedField = -1;
                             drawBoardSingleField(brettStatus[i], i, false);
                         } else {
-                            drawBoardSingleField(brettStatus[highlightedField],highlightedField,false);
+                            drawBoardSingleField(brettStatus[highlightedField], highlightedField, false);
                             ZiehenRueckgabe ret = komm.figurZiehen(highlightedField, i);
                             switch (ret) { // todo texte
                                 case ZIEHEN_BESTRAFT ->

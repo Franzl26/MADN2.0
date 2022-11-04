@@ -70,20 +70,4 @@ public class ServerVerbindungImpl extends UnicastRemoteObject implements ServerV
             return null;
         }
     }
-
-    public SpielDesign getSpielDesign() {
-        return spielDesign;
-    }
-
-    public BenutzerZugang getBenutzerZugang() {
-        return benutzerZugang;
-    }
-
-    public Raumauswahl getRaumauswahl() {
-        return raumauswahl;
-    }
-
-    public Spiel getSpiel() {
-        return spiel;
-    }
 }
