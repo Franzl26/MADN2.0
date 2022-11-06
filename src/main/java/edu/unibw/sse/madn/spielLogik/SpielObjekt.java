@@ -42,7 +42,7 @@ public class SpielObjekt {
         this.spielImpl = spielImpl;
         this.anClient = anClient;
         spielerAnzahl = spielerUndBotsAnz;
-        clients = sitzungen.clone();
+        clients = sitzungen;
 
         namen = new String[spielerAnzahl];
         felderVonSpieler = new FeldBesetztStatus[spielerAnzahl];
@@ -357,7 +357,7 @@ public class SpielObjekt {
         SpielStatistik spielStatistik1 = spielStatistik.holeZumSenden();
         //System.out.println("Spiel verlassen: " + namenHolen(sitzung));
         spielStatistik.namenSetzen(namen);
-        neueNamenSendenAlle(namen.clone());
+        neueNamenSendenAlle(namen);
         return spielStatistik1;
     }
 
@@ -406,9 +406,8 @@ public class SpielObjekt {
     }
 
     private void displayNewStateAll(FeldBesetztStatus[] state, int[] changed) {
-        FeldBesetztStatus[] statuses = state.clone();
         for (int i = 0; i < spielerAnzahl; i++) {
-            if (clients[i] != null) displayNewStateIntern(clients[i], statuses, changed);
+            if (clients[i] != null) displayNewStateIntern(clients[i], state, changed);
         }
     }
 

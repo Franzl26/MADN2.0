@@ -142,9 +142,8 @@ public class RaumauswahlImpl implements Raumauswahl, WarteraumCallback {
 
 
     private void updateRaum(WarteraumImpl raum) {
-        Sitzung[] clients = raum.clients().clone();
-        String[] namen = raum.namen().clone();
-        for (Sitzung s : clients) {
+        String[] namen = raum.namen();
+        for (Sitzung s : raum.clients()) {
             new Thread(() -> {
                 boolean ret = anClient.warteraumNamenUpdaten(s, namen);
                 if (!ret) warteraumVerlassen(s);
@@ -153,9 +152,8 @@ public class RaumauswahlImpl implements Raumauswahl, WarteraumCallback {
     }
 
     private void startenFuerRaum(WarteraumImpl raum) {
-        Sitzung[] clients = raum.clients().clone();
         String design = raum.design();
-        for (Sitzung s : clients) {
+        for (Sitzung s : raum.clients()) {
             new Thread(() -> {
                 boolean ret = anClient.spielStartet(s, design);
                 if (!ret) warteraumVerlassen(s);

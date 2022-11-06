@@ -20,7 +20,7 @@ public class SpielStatistikImpl {
     }
 
     void namenSetzen(String[] names) {
-        this.names = names.clone();
+        this.names = names;
     }
 
     void incZahlGewuerfelt(int spieler, int zahl) {
@@ -44,7 +44,7 @@ public class SpielStatistikImpl {
     }
 
     SpielStatistik holeZumSenden() {
-        return new zumSenden(names.clone(), zahlenGewuerfelt.clone(), andereGeschlagen.clone(), geschlagenWorden.clone(), prioZugFalsch.clone(), platzierungen.clone(), startZeit);
+        return new zumSenden(names, zahlenGewuerfelt, andereGeschlagen, geschlagenWorden, prioZugFalsch, platzierungen, startZeit);
     }
 
     private record zumSenden(String[] namen, int[][] zahlenGewuerfelt, int[] andereGeschlagen, int[] geschlagenWorden,
