@@ -54,10 +54,10 @@ public class DialogSpiel extends AnchorPane implements SpielUpdaten {
         gcDice = diceCanvas.getGraphicsContext2D();
         diceCanvas.setOnMouseClicked(e -> {
             WuerfelnRueckgabe ret = komm.wuerfeln();
-            switch (ret) { // todo texte
-                case WUERFELN_NICHT_DRAN -> Meldungen.zeigeInformation("Nicht dran", "Du bist nicht dran mit würfeln.");
+            switch (ret) {
+                case WUERFELN_NICHT_DRAN -> Meldungen.zeigeInformation("Nicht am Zug", "Warte mit würfeln bis du am Zug bist!");
                 case WUERFELN_FALSCHE_PHASE ->
-                        Meldungen.zeigeInformation("Schon gewürfelt", "Du hast schon gewürfelt, jetzt ist ziehen dran.");
+                        Meldungen.zeigeInformation("Erst Ziehen", "Du musst zuerst eine Spielfigur bewegen bevor du erneut würfeln darfst!");
                 case WUERFELN_ERFOLGREICH, WUERFELN_KEIN_ZUG_MOEGLICH -> {
                 }
                 case WUERFELN_VERBINDUNG_ABGEBROCHEN -> {
@@ -142,7 +142,7 @@ public class DialogSpiel extends AnchorPane implements SpielUpdaten {
     }
 
     private void spielVerlassen() {
-        if (Meldungen.frageBestaetigung("Spiel verlassen", "Willst du das Spiel wirklich verlassen?")) {
+        if (Meldungen.frageBestaetigung("Willst du dass Spiel wirklich verlassen?", "Ein Wiedereinstieg in das laufende Spiel ist nicht möglich!")) {
             SpielStatistik statistik = komm.spielVerlassen();
             if (statistik == null) {
                 Meldungen.kommunikationAbgebrochen();
@@ -248,15 +248,15 @@ public class DialogSpiel extends AnchorPane implements SpielUpdaten {
                             ZiehenRueckgabe ret = komm.figurZiehen(highlightedField, i);
                             switch (ret) { // todo texte
                                 case ZIEHEN_BESTRAFT ->
-                                        Meldungen.zeigeInformation("Prio Zug missachtet", "Du hast einen PrioZug missachtet, die entsprechende Figur wurde geschlagen");
+                                        Meldungen.zeigeInformation("Priorität missachtet", "Spielzugpriorität wurde nicht eingehalten!\nAbrücken oder Schlagen nicht beachtet.\nDeine Figur wird auf die Startposition zurückgesetzt!");
                                 case ZIEHEN_NICHT_DRAN ->
-                                        Meldungen.zeigeInformation("Nicht an der Reihe", "Du bist nicht dran du Pflaume");
+                                        Meldungen.zeigeInformation("Nicht am Zug", "Warte bis du am Zug bist!");
                                 case ZIEHEN_ERFOLGREICH -> {
                                 }
                                 case ZIEHEN_ZUG_FEHLERHAFT ->
-                                        Meldungen.zeigeInformation("Fehlerhafter Zug", "Fehlerhafter Zug. Bitte nochmal setzen.");
+                                        Meldungen.zeigeInformation("Fehlerhafter Zug", "Der ausgeführte Spielzug entspricht nicht dem Regeln!\nNochmal ziehen");
                                 case ZIEHEN_NICHT_GEWUERFELT ->
-                                        Meldungen.zeigeInformation("Nicht gewürfelt", "Du hast noch nicht gewürfelt");
+                                        Meldungen.zeigeInformation("Nicht gewürfelt", "Du musst zuerst würfeln, bevor du deine Figur bewegen kannst!");
                                 case ZIEHEN_VERBINDUNG_ABGEBROCHEN -> {
                                     Meldungen.kommunikationAbgebrochen();
                                     System.exit(-1);
