@@ -118,7 +118,7 @@ public class RaumauswahlImpl implements Raumauswahl, WarteraumCallback {
         if (id == null) return false;
         WarteraumImpl raum = idZuRaum.get(id);
         if (raum.anzahlSpieler() + raum.botAnzahl() <= 1) return false;
-        spielErstellen.spielErstellen(this, raum.clients(), raum.botAnzahl(), raum.anzahlSpieler());
+        spielErstellen.spielErstellen(raum.clients(), raum.botAnzahl(), raum.anzahlSpieler());
         alleInRaumEntfernen(id);
         idZuRaum.remove(id);
         updateClients();

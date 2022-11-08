@@ -26,7 +26,7 @@ public class ServerStart {
             SpielDesign spielDesign = new SpielDesignImpl();
             BenutzerZugang benutzerZugang = new BenutzerZugangImpl(benutzerDaten);
             RaumauswahlImpl raumauswahl = new RaumauswahlImpl();
-            SpielImpl spiel = new SpielImpl();
+            SpielImpl spiel = new SpielImpl(raumauswahl);
             raumauswahl.spielErstellenSetzen(spiel);
             ServerVerbindung serverVerbindung = new ServerVerbindungImpl(spielDesign, benutzerZugang, raumauswahl, spiel);
             AnClientSendenImpl anClientSenden = new AnClientSendenImpl();

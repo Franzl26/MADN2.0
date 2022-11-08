@@ -3,9 +3,7 @@ package edu.unibw.sse.madn.warteraumverwaltung;
 import edu.unibw.sse.madn.serverKomm.AnClientSendenRaumauswahl;
 import edu.unibw.sse.madn.serverKomm.Sitzung;
 
-import java.io.Serializable;
-
-public interface Raumauswahl extends Serializable {
+public interface Raumauswahl {
     /**
      * setzt Kanal mit dem der Server Nachrichten an den Client senden kann
      *

@@ -1,8 +1,6 @@
 package edu.unibw.sse.madn.benutzerVerwaltung;
 
-import java.io.Serializable;
-
-public interface BenutzerZugang extends Serializable {
+public interface BenutzerZugang {
     /**
      * Benutzer anmelden
      *

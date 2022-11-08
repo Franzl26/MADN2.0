@@ -7,10 +7,9 @@ public interface SpielErstellen {
     /**
      * Erstellt ein neues Spiel
      *
-     * @param warteraum Callback für Spiel beenden, Clients für updates anmelden
      * @param sitzungen alle Sitzungen von Nutzern in Lobby
      * @param bots      Anzahl Bots
      * @param spieler   Anzahl Spieler
      */
-    void spielErstellen(WarteraumCallback warteraum, Sitzung[] sitzungen, int bots, int spieler);
+    void spielErstellen(Sitzung[] sitzungen, int bots, int spieler);
 }

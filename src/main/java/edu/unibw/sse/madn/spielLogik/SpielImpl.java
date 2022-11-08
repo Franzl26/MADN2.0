@@ -10,11 +10,14 @@ import java.util.HashMap;
 public class SpielImpl implements Spiel, SpielErstellen {
     private AnClientSendenSpiel anClient;
     private final HashMap<Sitzung, SpielObjekt> istInSpiel = new HashMap<>();
-    private WarteraumCallback warteraumCallback;
+    private final WarteraumCallback warteraumCallback;
+
+    public SpielImpl(WarteraumCallback warteraumCallback) {
+        this.warteraumCallback = warteraumCallback;
+    }
 
     @Override
-    public synchronized void spielErstellen(WarteraumCallback warteraum, Sitzung[] sitzungen, int bots, int spieler) {
-        warteraumCallback = warteraum;
+    public synchronized void spielErstellen(Sitzung[] sitzungen, int bots, int spieler) {
         Sitzung[] neueSitzungen = new Sitzung[bots + spieler];
         if (bots >= 1) {
             neueSitzungen[0] = sitzungen[0];
